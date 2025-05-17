@@ -8,14 +8,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.plugin.Plugin;
 
-public class LightingOnDeathListener implements Listener
+public class OnDeath implements Listener
 {
     private final Plugin plugin;
 
-    public LightingOnDeathListener(Plugin plugin) {
+    public OnDeath(Plugin plugin) {
         this.plugin = plugin;
     }
 
+    // TODO! put the entity in a seperate variable for readablilite stuff lol
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
         if (e.getEntityType() != EntityType.PLAYER) {
