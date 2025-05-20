@@ -4,6 +4,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.redpix.ecosystem.listeners.OnDeath;
+import net.redpix.ecosystem.listeners.OnDrop;
+import net.redpix.ecosystem.listeners.OnEnterFight;
+import net.redpix.ecosystem.listeners.OnPickup;
 import net.redpix.ecosystem.util.config.ConfigManager;
 
 public class Ecosystem extends JavaPlugin
@@ -17,6 +20,9 @@ public class Ecosystem extends JavaPlugin
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new OnDeath(this), this);
+        pm.registerEvents(new OnPickup(this), this);
+        pm.registerEvents(new OnDrop(this), this);
+        pm.registerEvents(new OnEnterFight(this), this);
     }
 
     @Override

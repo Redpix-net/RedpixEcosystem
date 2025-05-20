@@ -1,4 +1,5 @@
 name: RedpixEcosystemPlugin 
 version: 0.1
+api-version: 1.13
 main: net.redpix.ecosystem.Ecosystem 
 folia-supported: true

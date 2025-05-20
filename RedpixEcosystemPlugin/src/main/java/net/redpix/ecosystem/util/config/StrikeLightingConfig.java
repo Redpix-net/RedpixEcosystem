@@ -9,23 +9,23 @@ import org.bukkit.entity.Item;
 
 public class StrikeLightingConfig implements ConfigurationSerializable {
 
-    private List<Item> banned_items;
+    private String placeholder;
 
-    public StrikeLightingConfig(List<Item> banned_items) {
-        this.banned_items = banned_items;
+    public StrikeLightingConfig(String placeholder) {
+        this.placeholder = placeholder;
     }
 
     public Map<String, Object> serialize() {
         Map<String, Object> data = new HashMap<>();
 
-        data.put("banned_items", this.banned_items);
+        data.put("placeholder", this.placeholder);
 
         return data;
     }
 
     public static StrikeLightingConfig deserialize(Map<String, Object> args) {
         return new StrikeLightingConfig (
-                (List<Item>) args.get("banned_items")
+                (String) args.get("placeholder")
         );
     }
 }
