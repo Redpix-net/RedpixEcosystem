@@ -6,13 +6,14 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.plugin.Plugin;
+
+import net.redpix.ecosystem.Ecosystem;
 
 public class OnDeath implements Listener
 {
-    private final Plugin plugin;
+    private final Ecosystem plugin;
 
-    public OnDeath(Plugin plugin) {
+    public OnDeath(Ecosystem plugin) {
         this.plugin = plugin;
     }
 
@@ -22,6 +23,8 @@ public class OnDeath implements Listener
         if (e.getEntityType() != EntityType.PLAYER) {
             return;
         }
+
+        plugin.getPlayersInCombat().remove(e.getEntity());
 
         Location loc = e.getEntity().getLocation();
         

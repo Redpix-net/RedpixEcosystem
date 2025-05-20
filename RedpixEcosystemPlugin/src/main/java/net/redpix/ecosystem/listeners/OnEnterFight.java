@@ -1,20 +1,19 @@
 package net.redpix.ecosystem.listeners;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.plugin.Plugin;
 
-import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.text.Component;
+import net.redpix.ecosystem.Ecosystem;
+import net.redpix.ecosystem.util.CombatTimer;
 
 public class OnEnterFight implements Listener
 {
-    private final Plugin plugin;
+    private final Ecosystem plugin;
 
-    public OnEnterFight(Plugin plugin) {
+    public OnEnterFight(Ecosystem plugin) {
         this.plugin = plugin;
     }
 
@@ -23,12 +22,11 @@ public class OnEnterFight implements Listener
         if (e.getEntityType() != EntityType.PLAYER) {
             return;
         }
-
-        Entity player = e.getEntity();
-        BossBar bar = BossBar.bossBar(Component.text(""), 1, BossBar.Color.PURPLE, BossBar.Overlay.NOTCHED_6);
         
-        e.getEntity().getScheduler().run(plugin, task -> {
-            player.showBossBar(bar);
-        }, null);
+        if (plugin.getPlayersInCombat().containsKey(e.getEntity())) {
+            return;
+        }
+
+        new CombatTimer(plugin).startTimer((Player) e.getEntity());
     }
 }
