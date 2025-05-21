@@ -7,7 +7,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import net.redpix.ecosystem.Ecosystem;
-import net.redpix.ecosystem.util.CombatTimer;
 
 public class OnEnterFight implements Listener
 {
@@ -23,10 +22,13 @@ public class OnEnterFight implements Listener
             return;
         }
         
-        if (plugin.getPlayersInCombat().containsKey(e.getEntity())) {
+        Player player = (Player) e.getEntity();
+
+        if (plugin.getPlayersInCombat().containsKey(player)) {
             return;
         }
 
-        new CombatTimer(plugin).startTimer((Player) e.getEntity());
+        plugin.getPlayersInCombat().put(player, 30);
+        plugin.getCombatTimer().startTimer(player);
     }
 }
