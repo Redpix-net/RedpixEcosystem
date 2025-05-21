@@ -23,9 +23,13 @@ public class OnEnterFight implements Listener
         if (e.getEntityType() != EntityType.PLAYER || e.getDamager().getType() != EntityType.PLAYER) {
             return;
         }
-        
+
         Player player_target = (Player) e.getEntity();
         Player player_attacker = (Player) e.getDamager();
+
+        if (player_attacker == player_target) {
+            return;
+        }
 
         if (plugin.getPlayersInCombat().containsKey(player_target)) {
             plugin.getPlayersInCombat().replace(player_target, Instant.now().plusSeconds(30));
