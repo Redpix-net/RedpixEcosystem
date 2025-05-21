@@ -1,8 +1,10 @@
 package net.redpix.ecosystem.util;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import org.bukkit.entity.Player;
 
-import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.text.Component;
@@ -26,6 +28,11 @@ public class CombatTimer {
         );
         
         player.getScheduler().runAtFixedRate(plugin, scheduledTask -> {
+            long timeLeft = Duration.between(
+                Instant.now(), 
+                plugin.getPlayersInCombat().get(player)
+            ).getSeconds();
+
             player.hideBossBar(bar);
 
             if (!plugin.getPlayersInCombat().containsKey(player)) {
@@ -33,7 +40,7 @@ public class CombatTimer {
                 return;
             }
 
-            if (plugin.getPlayersInCombat().get(player) < 0) {
+            if (timeLeft <= 0) {
                 plugin.getPlayersInCombat().remove(player);
                 
                 player.showTitle(Title.title(Component.text("Der Kampf ist vorbei!"), Component.text("")));
@@ -41,11 +48,9 @@ public class CombatTimer {
                 return;
             }
 
-            bar.name(Component.text("ᴘᴠᴘ ᴇɴᴅᴇᴛ ɪɴ: " + plugin.getPlayersInCombat().get(player)));
+            bar.name(Component.text("ᴘᴠᴘ ᴇɴᴅᴇᴛ ɪɴ: " + timeLeft));
 
             player.showBossBar(bar);
-
-            plugin.getPlayersInCombat().replace(player, plugin.getPlayersInCombat().get(player) - 1);
-        }, null,(long) 1, (long) 1);
+        }, null, 1L, 20L);
     }
 }

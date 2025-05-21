@@ -1,5 +1,7 @@
 package net.redpix.ecosystem.listeners;
 
+import java.time.Instant;
+
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +30,7 @@ public class OnEnterFight implements Listener
             return;
         }
 
-        plugin.getPlayersInCombat().put(player, 30);
+        plugin.getPlayersInCombat().put(player, Instant.now().plusSeconds(30));
         plugin.getCombatTimer().startTimer(player);
     }
 }

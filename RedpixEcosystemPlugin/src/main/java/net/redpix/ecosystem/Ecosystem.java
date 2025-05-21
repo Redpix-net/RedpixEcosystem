@@ -1,12 +1,12 @@
 package net.redpix.ecosystem;
 
+import java.time.Instant;
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.redpix.ecosystem.listeners.OnDeath;
 import net.redpix.ecosystem.listeners.OnDrop;
 import net.redpix.ecosystem.listeners.OnEnderPearl;
@@ -21,7 +21,7 @@ public class Ecosystem extends JavaPlugin
     private ConfigManager configManager = new ConfigManager(this);
     private CombatTimer combatTimer = new CombatTimer(this);
 
-    private HashMap<Player, Integer> playersInCombat = new HashMap<Player, Integer>();
+    private HashMap<Player, Instant> playersInCombat = new HashMap<Player, Instant>();
 
     @Override
     public void onEnable() {
@@ -41,7 +41,7 @@ public class Ecosystem extends JavaPlugin
         configManager.save_configs();
     }
 
-    public HashMap<Player, Integer> getPlayersInCombat() {
+    public HashMap<Player, Instant> getPlayersInCombat() {
         return playersInCombat;
     }
 
