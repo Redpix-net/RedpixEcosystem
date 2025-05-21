@@ -20,17 +20,21 @@ public class OnEnterFight implements Listener
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
-        if (e.getEntityType() != EntityType.PLAYER) {
+        if (e.getEntityType() != EntityType.PLAYER || e.getDamager().getType() != EntityType.PLAYER) {
             return;
         }
         
-        Player player = (Player) e.getEntity();
+        Player player_target = (Player) e.getEntity();
+        Player player_attacker = (Player) e.getDamager();
 
-        if (plugin.getPlayersInCombat().containsKey(player)) {
+        if (plugin.getPlayersInCombat().containsKey(player_target)) {
+            plugin.getPlayersInCombat().replace(player_target, Instant.now().plusSeconds(30));
+            plugin.getPlayersInCombat().replace(player_attacker, Instant.now().plusSeconds(30));
             return;
         }
 
-        plugin.getPlayersInCombat().put(player, Instant.now().plusSeconds(30));
-        plugin.getCombatTimer().startTimer(player);
+        plugin.getPlayersInCombat().put(player_target, Instant.now().plusSeconds(30));
+        plugin.getPlayersInCombat().put(player_attacker, Instant.now().plusSeconds(30));
+        plugin.getCombatTimer().startTimer(player_target);
     }
 }
