@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.title.Title;
 import net.redpix.ecosystem.Ecosystem;
 
 public class CombatTimer {
@@ -43,7 +42,7 @@ public class CombatTimer {
             if (timeLeft <= 0) {
                 plugin.getPlayersInCombat().remove(player);
                 
-                player.showTitle(Title.title(Component.text("Der Kampf ist vorbei!"), Component.text("")));
+                player.sendMessage(Component.text("DER KAMPF IST VORBEI!"));
                 scheduledTask.cancel();
                 return;
             }

@@ -9,6 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 
+import net.kyori.adventure.bossbar.BossBar.Color;
+import net.kyori.adventure.text.Component;
 import net.redpix.ecosystem.Ecosystem;
 
 public class OnEnderPearl implements Listener
@@ -44,7 +46,9 @@ public class OnEnderPearl implements Listener
 
             return;
         }
-
+        
         e.setCancelled(true);
+
+        player.sendMessage(Component.text(Color.RED + "Deine Ender Pearl ist noch auf cooldown für: " + cooldown + "Sekunden."));
     }
 }

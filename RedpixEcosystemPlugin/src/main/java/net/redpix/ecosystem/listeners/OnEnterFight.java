@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import net.kyori.adventure.bossbar.BossBar.Color;
+import net.kyori.adventure.text.Component;
 import net.redpix.ecosystem.Ecosystem;
 
 public class OnEnterFight implements Listener
@@ -39,6 +41,15 @@ public class OnEnterFight implements Listener
 
         plugin.getPlayersInCombat().put(player_target, Instant.now().plusSeconds(30));
         plugin.getPlayersInCombat().put(player_attacker, Instant.now().plusSeconds(30));
+
         plugin.getCombatTimer().startTimer(player_target);
+        plugin.getCombatTimer().startTimer(player_attacker);
+        
+        Component message = Component.text(
+            Color.RED + 
+            "DU BIST IM KAMPF, VERLASSE NICHT DEN SERVER!"
+        );
+
+        player_target.sendMessage(message);
     }
 }
