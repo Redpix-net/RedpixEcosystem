@@ -27,6 +27,8 @@ public class OnDeath implements Listener
 
         plugin.getPlayersInCombat().remove((Player) e.getEntity());
 
+        e.getEntity().setGlowing(false);
+
         Location loc = e.getEntity().getLocation();
         
         e.getEntity().getScheduler().run(plugin, task -> {
