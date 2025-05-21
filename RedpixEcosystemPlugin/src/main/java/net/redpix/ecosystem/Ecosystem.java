@@ -22,6 +22,7 @@ public class Ecosystem extends JavaPlugin
     private CombatTimer combatTimer = new CombatTimer(this);
 
     private HashMap<Player, Instant> playersInCombat = new HashMap<Player, Instant>();
+    private HashMap<Player, Instant> enderPearlCooldown = new HashMap<Player, Instant>();
 
     @Override
     public void onEnable() {
@@ -43,6 +44,10 @@ public class Ecosystem extends JavaPlugin
 
     public HashMap<Player, Instant> getPlayersInCombat() {
         return playersInCombat;
+    }
+
+    public HashMap<Player, Instant> getEnderPearlCooldown() {
+        return enderPearlCooldown;
     }
 
     public CombatTimer getCombatTimer() {
