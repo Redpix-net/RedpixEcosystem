@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.redpix.ecosystem.listeners.CancelCommand;
 import net.redpix.ecosystem.listeners.OnDeath;
 import net.redpix.ecosystem.listeners.OnDrop;
 import net.redpix.ecosystem.listeners.OnEnderPearl;
@@ -35,6 +36,7 @@ public class Ecosystem extends JavaPlugin
         pm.registerEvents(new OnEnterFight(this), this);
         pm.registerEvents(new OnLeave(this), this);
         pm.registerEvents(new OnEnderPearl(this), this);
+        pm.registerEvents(new CancelCommand(this), this);
     }
 
     @Override

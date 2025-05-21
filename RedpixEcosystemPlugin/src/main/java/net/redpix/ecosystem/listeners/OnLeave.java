@@ -3,7 +3,10 @@ package net.redpix.ecosystem.listeners;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.BroadcastMessageEvent;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.redpix.ecosystem.Ecosystem;
 
 public class OnLeave implements Listener
@@ -19,5 +22,7 @@ public class OnLeave implements Listener
         if (plugin.getPlayersInCombat().containsKey(e.getPlayer())) {
             e.getPlayer().setHealth(0);
         }
+
+        plugin.getServer().broadcast(Component.text(e.getPlayer().name() + " ɪѕᴛ ɪᴍ ᴋᴀᴍᴘꜰ ᴠᴇʀʟᴀѕѕᴇɴ!", NamedTextColor.GREEN));
     }
 }

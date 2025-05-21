@@ -3,6 +3,7 @@ package net.redpix.ecosystem.listeners;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -24,7 +25,7 @@ public class OnDeath implements Listener
             return;
         }
 
-        plugin.getPlayersInCombat().remove(e.getEntity());
+        plugin.getPlayersInCombat().remove((Player) e.getEntity());
 
         Location loc = e.getEntity().getLocation();
         
