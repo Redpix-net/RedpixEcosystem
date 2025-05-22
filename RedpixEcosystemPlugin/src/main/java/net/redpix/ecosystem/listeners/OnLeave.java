@@ -1,5 +1,7 @@
 package net.redpix.ecosystem.listeners;
 
+import java.util.Date;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -26,5 +28,9 @@ public class OnLeave implements Listener
             );
         }
 
+        if (plugin.getPlayerCheck().contains(e.getPlayer())) {
+            e.getPlayer().ban("Left during check", (Date) null, "");
+            plugin.getPlayerCheck().remove(e.getPlayer());
+        }
     }
 }

@@ -19,7 +19,7 @@ public class DiscordCommand implements BasicCommand
 
     @Override
     public void execute(CommandSourceStack commandSourceStack, String[] args) {
-        commandSourceStack.getExecutor().sendMessage(
+        commandSourceStack.getSender().sendMessage(
             Component.text("ᴅɪѕᴄᴏʀᴅ \n", NamedTextColor.BLUE)
             .append(Component.text("ᴋʟɪᴄᴋᴇ ᴀᴜꜰ ᴅᴇɴ ʟɪɴᴋ ᴜɴᴛᴇɴ, ᴜᴍ ᴜɴѕᴇʀᴇᴍ ᴅɪѕᴄᴏʀᴅ ѕᴇʀᴠᴇʀ ʙᴇɪᴢᴜᴛʀᴇᴛᴇɴ! \n", NamedTextColor.WHITE))
             .append(Component.text("↓ ᴋʟɪᴄᴋᴇ ʜɪᴇʀ ↓ \n", NamedTextColor.RED))

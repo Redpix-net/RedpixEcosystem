@@ -1,7 +1,9 @@
 package net.redpix.ecosystem;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.entity.Player;
@@ -9,8 +11,10 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import net.redpix.ecosystem.commands.CheckCommand;
 import net.redpix.ecosystem.commands.DiscordCommand;
 import net.redpix.ecosystem.listeners.CancelCommand;
+import net.redpix.ecosystem.listeners.FreezePlayer;
 import net.redpix.ecosystem.listeners.OnDeath;
 import net.redpix.ecosystem.listeners.OnDrop;
 import net.redpix.ecosystem.listeners.OnEnderPearl;
@@ -27,7 +31,7 @@ public class Ecosystem extends JavaPlugin
 
     private HashMap<Player, Instant> playersInCombat = new HashMap<Player, Instant>();
     private HashMap<Player, Instant> enderPearlCooldown = new HashMap<Player, Instant>();
-    private HashMap<Player, Set<Player>> combatPairs = new HashMap<Player, Set<Player>>();
+    private List<Player> playerCheck = new ArrayList<Player>();
 
     @Override
     public void onEnable() {
@@ -41,9 +45,13 @@ public class Ecosystem extends JavaPlugin
         pm.registerEvents(new OnLeave(this), this);
         pm.registerEvents(new OnEnderPearl(this), this);
         pm.registerEvents(new CancelCommand(this), this);
+        pm.registerEvents(new FreezePlayer(this), this);
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
-            event -> event.registrar().register("discord", new DiscordCommand(this))
+            event -> {
+                event.registrar().register("discord", new DiscordCommand(this));
+                event.registrar().register("check", new CheckCommand(this));
+            }
         );
     }
 
@@ -56,12 +64,12 @@ public class Ecosystem extends JavaPlugin
         return playersInCombat;
     }
 
-    public HashMap<Player, Set<Player>> getCombatPairs() {
-        return combatPairs;
-    }
-
     public HashMap<Player, Instant> getEnderPearlCooldown() {
         return enderPearlCooldown;
+    }
+
+    public List<Player> getPlayerCheck() {
+        return playerCheck;
     }
 
     public CombatTimer getCombatTimer() {

@@ -26,9 +26,6 @@ public class OnDeath implements Listener
         }
         
         if (plugin.getPlayersInCombat().containsKey((Player) e.getEntity())) {
-            for (Player p : plugin.getCombatPairs().get((Player) e.getEntity())) {
-                plugin.getPlayersInCombat().remove(p);
-            }
             plugin.getPlayersInCombat().remove((Player) e.getEntity());
         }
 
