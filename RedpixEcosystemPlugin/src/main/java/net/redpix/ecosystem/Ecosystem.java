@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import net.redpix.ecosystem.commands.DiscordCommand;
 import net.redpix.ecosystem.listeners.CancelCommand;
 import net.redpix.ecosystem.listeners.OnDeath;
 import net.redpix.ecosystem.listeners.OnDrop;
@@ -39,6 +41,10 @@ public class Ecosystem extends JavaPlugin
         pm.registerEvents(new OnLeave(this), this);
         pm.registerEvents(new OnEnderPearl(this), this);
         pm.registerEvents(new CancelCommand(this), this);
+
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
+            event -> event.registrar().register("discord", new DiscordCommand(this))
+        );
     }
 
     @Override
