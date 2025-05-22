@@ -44,7 +44,7 @@ public class CheckCommand implements BasicCommand
             ));
         }
 
-        if (args.length == 1) {
+        if (args.length <= 1) {
             return;
         }
 

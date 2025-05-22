@@ -36,7 +36,7 @@ public class OnDeath implements Listener
         e.getEntity().getScheduler().run(plugin, task -> {
             // can just use the entity cause we already checked if it is a player or not :P
             Entity player = e.getEntity();
-            player.getWorld().strikeLightning(loc);
+            player.getWorld().strikeLightningEffect(loc);
         }, null);
     }
 }
