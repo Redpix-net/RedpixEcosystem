@@ -2,6 +2,7 @@ package net.redpix.ecosystem;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -24,6 +25,7 @@ public class Ecosystem extends JavaPlugin
 
     private HashMap<Player, Instant> playersInCombat = new HashMap<Player, Instant>();
     private HashMap<Player, Instant> enderPearlCooldown = new HashMap<Player, Instant>();
+    private HashMap<Player, Set<Player>> combatPairs = new HashMap<Player, Set<Player>>();
 
     @Override
     public void onEnable() {
@@ -46,6 +48,10 @@ public class Ecosystem extends JavaPlugin
 
     public HashMap<Player, Instant> getPlayersInCombat() {
         return playersInCombat;
+    }
+
+    public HashMap<Player, Set<Player>> getCombatPairs() {
+        return combatPairs;
     }
 
     public HashMap<Player, Instant> getEnderPearlCooldown() {
