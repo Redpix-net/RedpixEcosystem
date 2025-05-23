@@ -2,8 +2,6 @@ package net.redpix.ecosystem.listeners;
 
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;

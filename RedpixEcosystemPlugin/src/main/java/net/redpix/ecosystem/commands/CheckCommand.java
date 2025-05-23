@@ -34,17 +34,17 @@ public class CheckCommand implements BasicCommand
             return;
         }
 
-        if (args.length >= 1) {
+        if (args.length == 1) {
             plugin.getPlayerCheck().add(player);
             player.sendMessage(Component.text("ᴅᴜ ᴡüʀᴅᴇѕᴛ ᴢᴜ ᴇɪɴᴇʀ üʙᴇʀᴘʀüꜰᴜɴɢ ᴀᴜѕɢᴇᴡäʜʟᴛ.", NamedTextColor.RED));
+
+            player.setAllowFlight(true);
 
             player.showTitle(Title.title(
                 Component.text("üʙᴇʀᴘʀüꜰᴜɴɢ", NamedTextColor.RED), 
                 Component.text("ᴅᴜ ᴡüʀᴅᴇѕᴛ ᴢᴜ ᴇɪɴᴇʀ üʙᴇʀᴘʀüꜰᴜɴɢ ᴀᴜѕɢᴇᴡäʜʟᴛ", NamedTextColor.RED)
             ));
-        }
 
-        if (args.length <= 1) {
             return;
         }
 
@@ -52,10 +52,12 @@ public class CheckCommand implements BasicCommand
             case "pass":
                 player.sendMessage(Component.text("ᴅᴜ ʜᴀѕᴛ ᴅɪᴇ üʙᴇʀᴘʀüꜰᴜɴɢ ʙᴇѕᴛᴀɴᴅᴇɴ! ᴅᴜ ᴋᴀɴɴѕᴛ ᴡᴇɪᴛᴇʀ ѕᴘɪᴇʟᴇɴ.", NamedTextColor.RED));
                 plugin.getPlayerCheck().remove(player);
+                player.setAllowFlight(false);
                 break;
             case "deny":
                 plugin.getPlayerCheck().remove(player);
                 player.ban("Cheats found on check", (Date) null, "");
+                player.setAllowFlight(false);
                 break;
             default:
                 break;
