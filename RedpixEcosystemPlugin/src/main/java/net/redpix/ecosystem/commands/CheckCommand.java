@@ -1,7 +1,9 @@
 package net.redpix.ecosystem.commands;
 
+import java.util.Collection;
 import java.util.Date;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.Nullable;
 
@@ -63,6 +65,19 @@ public class CheckCommand implements BasicCommand
                 break;
         }
     }
+
+    @Override
+    public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args) {
+        if (args.length == 0) {
+            return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+        }
+
+        return Bukkit.getOnlinePlayers().stream()
+            .map(Player::getName)
+            .filter(name -> name.toLowerCase().startsWith(args[args.length - 1].toLowerCase()))
+            .toList();
+    }
+
 
     @Override
     public @Nullable String permission() {
