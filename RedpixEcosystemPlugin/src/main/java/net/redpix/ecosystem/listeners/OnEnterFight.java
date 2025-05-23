@@ -23,12 +23,20 @@ public class OnEnterFight implements Listener
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
-        if (e.getEntityType() != EntityType.PLAYER || e.getDamager().getType() != EntityType.PLAYER) {
+        if (e.getEntityType() != EntityType.PLAYER) {
             return;
         }
 
+        Player player_attacker;
         Player player_target = (Player) e.getEntity();
-        Player player_attacker = (Player) e.getDamager();
+
+        if (e.getDamageSource().getDirectEntity() instanceof Player) {
+            player_attacker = (Player) e.getDamageSource().getDirectEntity();
+        } else if (e.getDamageSource().getCausingEntity() instanceof Player) {
+            player_attacker = (Player) e.getDamageSource().getCausingEntity();
+        } else {
+            return;
+        }
 
         if (player_attacker == player_target) {
             return;
