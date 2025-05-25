@@ -43,6 +43,8 @@ public class OnEnderPearl implements Listener
 
         if (cooldown <= 0) {
             plugin.getEnderPearlCooldown().remove(player);
+
+            return;
         }
         
         e.setCancelled(true);

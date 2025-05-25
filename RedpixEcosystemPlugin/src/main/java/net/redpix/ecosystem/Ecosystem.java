@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -15,6 +14,7 @@ import net.redpix.ecosystem.commands.CheckCommand;
 import net.redpix.ecosystem.commands.DiscordCommand;
 import net.redpix.ecosystem.listeners.CancelCommand;
 import net.redpix.ecosystem.listeners.FreezePlayer;
+import net.redpix.ecosystem.listeners.OnCraft;
 import net.redpix.ecosystem.listeners.OnDeath;
 import net.redpix.ecosystem.listeners.OnDrop;
 import net.redpix.ecosystem.listeners.OnEnderPearl;
@@ -46,6 +46,7 @@ public class Ecosystem extends JavaPlugin
         pm.registerEvents(new OnEnderPearl(this), this);
         pm.registerEvents(new CancelCommand(this), this);
         pm.registerEvents(new FreezePlayer(this), this);
+        pm.registerEvents(new OnCraft(this), this);
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
             event -> {
