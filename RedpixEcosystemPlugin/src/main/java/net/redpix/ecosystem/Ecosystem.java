@@ -21,6 +21,7 @@ import net.redpix.ecosystem.listeners.OnEnderPearl;
 import net.redpix.ecosystem.listeners.OnEnterFight;
 import net.redpix.ecosystem.listeners.OnLeave;
 import net.redpix.ecosystem.listeners.OnPickup;
+import net.redpix.ecosystem.listeners.OnPlace;
 import net.redpix.ecosystem.util.CombatTimer;
 import net.redpix.ecosystem.util.config.ConfigManager;
 
@@ -38,6 +39,8 @@ public class Ecosystem extends JavaPlugin
         configManager.init();
 
         PluginManager pm = getServer().getPluginManager();
+
+        // TODO! REWRITE 
         pm.registerEvents(new OnDeath(this), this);
         pm.registerEvents(new OnPickup(this), this);
         pm.registerEvents(new OnDrop(this), this);
@@ -47,6 +50,7 @@ public class Ecosystem extends JavaPlugin
         pm.registerEvents(new CancelCommand(this), this);
         pm.registerEvents(new FreezePlayer(this), this);
         pm.registerEvents(new OnCraft(this), this);
+        pm.registerEvents(new OnPlace(this), this);
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
             event -> {
