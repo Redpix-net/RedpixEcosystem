@@ -14,6 +14,7 @@ import net.redpix.ecosystem.commands.CheckCommand;
 import net.redpix.ecosystem.commands.DiscordCommand;
 import net.redpix.ecosystem.listeners.CancelCommand;
 import net.redpix.ecosystem.listeners.FreezePlayer;
+import net.redpix.ecosystem.listeners.GrindstoneListener;
 import net.redpix.ecosystem.listeners.OnCraft;
 import net.redpix.ecosystem.listeners.OnDeath;
 import net.redpix.ecosystem.listeners.OnDrop;
@@ -51,6 +52,7 @@ public class Ecosystem extends JavaPlugin
         pm.registerEvents(new FreezePlayer(this), this);
         pm.registerEvents(new OnCraft(this), this);
         pm.registerEvents(new OnPlace(this), this);
+        pm.registerEvents(new GrindstoneListener(this), this);
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
             event -> {
