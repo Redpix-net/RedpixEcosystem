@@ -38,13 +38,15 @@ public class CheckCommand implements BasicCommand
 
         if (args.length == 1) {
             plugin.getPlayerCheck().add(player);
+            player.sendMessage(Component.text("ᴠᴇʀʟᴀѕѕᴇ ᴅᴇɴ ѕᴇʀᴠᴇʀ ɴɪᴄʜᴛ!", NamedTextColor.RED));
             player.sendMessage(Component.text("ᴅᴜ ᴡüʀᴅᴇѕᴛ ᴢᴜ ᴇɪɴᴇʀ üʙᴇʀᴘʀüꜰᴜɴɢ ᴀᴜѕɢᴇᴡäʜʟᴛ.", NamedTextColor.RED));
 
             player.setAllowFlight(true);
 
             player.showTitle(Title.title(
                 Component.text("üʙᴇʀᴘʀüꜰᴜɴɢ", NamedTextColor.RED), 
-                Component.text("ᴅᴜ ᴡüʀᴅᴇѕᴛ ᴢᴜ ᴇɪɴᴇʀ üʙᴇʀᴘʀüꜰᴜɴɢ ᴀᴜѕɢᴇᴡäʜʟᴛ", NamedTextColor.RED)
+                Component.text("ᴅᴜ ᴡüʀᴅᴇѕᴛ ᴢᴜ ᴇɪɴᴇʀ üʙᴇʀᴘʀüꜰᴜɴɢ ᴀᴜѕɢᴇᴡäʜʟᴛ", NamedTextColor.RED),
+                null
             ));
 
             return;
