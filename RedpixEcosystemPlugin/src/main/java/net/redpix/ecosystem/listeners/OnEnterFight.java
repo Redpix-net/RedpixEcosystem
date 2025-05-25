@@ -38,6 +38,10 @@ public class OnEnterFight implements Listener
             return;
         }
 
+        if (plugin.getPlayerCheck().contains(player_target)) {
+            e.setDamage(0);
+        }
+
         if (player_attacker == player_target) {
             return;
         }

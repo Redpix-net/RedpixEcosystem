@@ -10,6 +10,7 @@ import org.jspecify.annotations.Nullable;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import net.redpix.ecosystem.Ecosystem;
@@ -38,7 +39,10 @@ public class CheckCommand implements BasicCommand
 
         if (args.length == 1) {
             plugin.getPlayerCheck().add(player);
-            player.sendMessage(Component.text("ᴠᴇʀʟᴀѕѕᴇ ᴅᴇɴ ѕᴇʀᴠᴇʀ ɴɪᴄʜᴛ!", NamedTextColor.RED));
+            player.sendMessage(
+                Component.text("ᴠᴇʀʟᴀѕѕᴇ ᴅᴇɴ ѕᴇʀᴠᴇʀ ɴɪᴄʜᴛ, ᴛʀɪᴛᴛ ᴅᴇᴍ ᴡᴀʀᴛᴇʀᴀᴜᴍ ʙᴇɪ. ꜰᴀʟʟѕ ᴅᴜ ɴᴏᴄʜ ɴɪᴄʜᴛ ɪᴍ ᴅɪѕᴄᴏʀᴅ ʙɪѕᴛ, ʜɪᴇʀ ɪѕᴛ ᴅᴇʀ ʟɪɴᴋ. ", NamedTextColor.RED)
+                .append(Component.text("discord.gg/redpix \n", NamedTextColor.RED).clickEvent(ClickEvent.openUrl("https://discord.gg/redpix")))
+            );
             player.sendMessage(Component.text("ᴅᴜ ᴡüʀᴅᴇѕᴛ ᴢᴜ ᴇɪɴᴇʀ üʙᴇʀᴘʀüꜰᴜɴɢ ᴀᴜѕɢᴇᴡäʜʟᴛ.", NamedTextColor.RED));
 
             player.setAllowFlight(true);
