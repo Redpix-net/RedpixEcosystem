@@ -9,6 +9,8 @@ import org.jspecify.annotations.Nullable;
 
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -53,6 +55,8 @@ public class CheckCommand implements BasicCommand
                 null
             ));
 
+            player.playSound(Sound.sound(Key.key("block.note_block.basedrum"), Sound.Source.PLAYER, 1f, 1f));
+
             return;
         }
 
@@ -61,6 +65,7 @@ public class CheckCommand implements BasicCommand
                 player.sendMessage(Component.text("ᴅᴜ ʜᴀѕᴛ ᴅɪᴇ üʙᴇʀᴘʀüꜰᴜɴɢ ʙᴇѕᴛᴀɴᴅᴇɴ! ᴅᴜ ᴋᴀɴɴѕᴛ ᴡᴇɪᴛᴇʀ ѕᴘɪᴇʟᴇɴ.", NamedTextColor.RED));
                 plugin.getPlayerCheck().remove(player);
                 player.setAllowFlight(false);
+                player.playSound(Sound.sound(Key.key("entity.experience_orb.pickup"), Sound.Source.PLAYER, 1f, 1f));
                 break;
             case "deny":
                 plugin.getPlayerCheck().remove(player);
