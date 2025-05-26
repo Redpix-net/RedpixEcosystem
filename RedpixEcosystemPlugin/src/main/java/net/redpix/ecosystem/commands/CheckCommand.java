@@ -92,6 +92,6 @@ public class CheckCommand implements BasicCommand
 
     @Override
     public @Nullable String permission() {
-        return "";
+        return "check";
     }
 }

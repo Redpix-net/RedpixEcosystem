@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.redpix.ecosystem.commands.CheckCommand;
 import net.redpix.ecosystem.commands.DiscordCommand;
+import net.redpix.ecosystem.commands.ReportCommand;
 import net.redpix.ecosystem.listeners.CancelCommand;
 import net.redpix.ecosystem.listeners.FreezePlayer;
 import net.redpix.ecosystem.listeners.GrindstoneListener;
@@ -60,6 +61,7 @@ public class Ecosystem extends JavaPlugin
             event -> {
                 event.registrar().register("discord", new DiscordCommand(this));
                 event.registrar().register("check", new CheckCommand(this));
+                event.registrar().register("report", new ReportCommand(this));
             }
         );
     }
