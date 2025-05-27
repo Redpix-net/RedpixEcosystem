@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-public class StrikeLightingConfig implements ConfigurationSerializable {
+public class SpawnProtectConfig implements ConfigurationSerializable {
 
     private String placeholder;
 
-    public StrikeLightingConfig(String placeholder) {
+    public SpawnProtectConfig(String placeholder) {
         this.placeholder = placeholder;
     }
 

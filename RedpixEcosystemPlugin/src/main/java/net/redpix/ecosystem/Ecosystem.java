@@ -6,15 +6,22 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import net.kyori.adventure.text.Component;
 import net.redpix.ecosystem.commands.CheckCommand;
 import net.redpix.ecosystem.commands.DiscordCommand;
 import net.redpix.ecosystem.commands.ReportCommand;
+import net.redpix.ecosystem.commands.SpawnProtectCommand;
 import net.redpix.ecosystem.commands.SupportCommand;
 import net.redpix.ecosystem.listeners.CancelCommand;
 import net.redpix.ecosystem.listeners.FreezePlayer;
@@ -28,6 +35,8 @@ import net.redpix.ecosystem.listeners.OnEnterFight;
 import net.redpix.ecosystem.listeners.OnLeave;
 import net.redpix.ecosystem.listeners.OnPickup;
 import net.redpix.ecosystem.listeners.OnPlace;
+import net.redpix.ecosystem.listeners.OnSpawnProtectPick;
+import net.redpix.ecosystem.listeners.SpawnZoneListener;
 import net.redpix.ecosystem.listeners.SupportInvListener;
 import net.redpix.ecosystem.util.CombatTimer;
 import net.redpix.ecosystem.util.config.ConfigManager;
@@ -46,8 +55,24 @@ public class Ecosystem extends JavaPlugin
     private Inventory supInv = Bukkit.createInventory(null, 27);
     private Inventory ticketInv = Bukkit.createInventory(null, 27);
 
+    private ItemStack editPick;
+
+    private final NamespacedKey zonePickKey = new NamespacedKey(this, "zone_pick");
+
     @Override
     public void onEnable() {
+        // Please dont ask
+        editPick = new ItemStack(Material.WOODEN_PICKAXE);
+        ItemMeta edit_pick_meta = editPick.getItemMeta();
+        edit_pick_meta.displayName(Component.text("Spawn Zone Editor"));
+        List<Component> lore = new ArrayList<Component>();
+        lore.add(Component.text("Can place points for Spawn Zone"));
+        edit_pick_meta.lore(lore);
+    
+        edit_pick_meta.getPersistentDataContainer().set(zonePickKey, PersistentDataType.STRING, "true");
+
+        editPick.setItemMeta(edit_pick_meta);
+
         configManager.init();
 
         PluginManager pm = getServer().getPluginManager();
@@ -66,6 +91,8 @@ public class Ecosystem extends JavaPlugin
         pm.registerEvents(new GrindstoneListener(this), this);
         pm.registerEvents(new MaceGlow(this), this);
         pm.registerEvents(new SupportInvListener(this), this);
+        pm.registerEvents(new OnSpawnProtectPick(this), this);
+        pm.registerEvents(new SpawnZoneListener(this), this);
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
             event -> {
@@ -73,6 +100,7 @@ public class Ecosystem extends JavaPlugin
                 event.registrar().register("check", new CheckCommand(this));
                 event.registrar().register("report", new ReportCommand(this));
                 event.registrar().register("support", new SupportCommand(this));
+                event.registrar().register("spawnprotect", new SpawnProtectCommand(this));
             }
         );
     }
@@ -80,6 +108,8 @@ public class Ecosystem extends JavaPlugin
     @Override
     public void onDisable() {
         configManager.save_configs();
+
+        this.saveConfig();
     }
 
     public HashMap<Player, Instant> getPlayersInCombat() {
@@ -108,5 +138,13 @@ public class Ecosystem extends JavaPlugin
 
     public Inventory getTicketInv() {
         return ticketInv;
+    }
+
+    public ItemStack getZonePick() {
+        return editPick;
+    }
+
+    public NamespacedKey getZonePickKey() {
+        return zonePickKey;
     }
 }
