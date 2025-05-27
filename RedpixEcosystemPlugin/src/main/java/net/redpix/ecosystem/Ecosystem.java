@@ -28,6 +28,7 @@ import net.redpix.ecosystem.listeners.OnEnterFight;
 import net.redpix.ecosystem.listeners.OnLeave;
 import net.redpix.ecosystem.listeners.OnPickup;
 import net.redpix.ecosystem.listeners.OnPlace;
+import net.redpix.ecosystem.listeners.SupportInvListener;
 import net.redpix.ecosystem.util.CombatTimer;
 import net.redpix.ecosystem.util.config.ConfigManager;
 
@@ -40,7 +41,10 @@ public class Ecosystem extends JavaPlugin
     private HashMap<Player, Instant> enderPearlCooldown = new HashMap<Player, Instant>();
     private List<Player> playerCheck = new ArrayList<Player>();
 
+    private HashMap<Player, String> supportTickets = new HashMap<Player, String>();
+
     private Inventory supInv = Bukkit.createInventory(null, 27);
+    private Inventory ticketInv = Bukkit.createInventory(null, 27);
 
     @Override
     public void onEnable() {
@@ -61,6 +65,7 @@ public class Ecosystem extends JavaPlugin
         pm.registerEvents(new OnPlace(this), this);
         pm.registerEvents(new GrindstoneListener(this), this);
         pm.registerEvents(new MaceGlow(this), this);
+        pm.registerEvents(new SupportInvListener(this), this);
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
             event -> {
@@ -85,6 +90,10 @@ public class Ecosystem extends JavaPlugin
         return enderPearlCooldown;
     }
 
+    public HashMap<Player, String> getSupportTickets() {
+        return supportTickets;
+    }
+
     public List<Player> getPlayerCheck() {
         return playerCheck;
     }
@@ -95,5 +104,9 @@ public class Ecosystem extends JavaPlugin
 
     public Inventory getSupInv() {
         return supInv;
+    }
+
+    public Inventory getTicketInv() {
+        return ticketInv;
     }
 }

@@ -27,6 +27,10 @@ public class MaceGlow implements Listener
             e.setCancelled(true);
         }
 
+        if (e.getInventory().equals(plugin.getTicketInv())) {
+            e.setCancelled(true);
+        }
+
         if (e.isShiftClick() && e.getClickedInventory() == e.getView().getBottomInventory() && e.getCurrentItem() != null && e.getCurrentItem().getType() == Material.MACE) {
             e.setCancelled(true);
         }
@@ -53,6 +57,10 @@ public class MaceGlow implements Listener
     @EventHandler
     public void onInventoryClick(InventoryDragEvent e) {
         if (e.getInventory().equals(plugin.getSupInv())) {
+            e.setCancelled(true);
+        }
+
+        if (e.getInventory().equals(plugin.getTicketInv())) {
             e.setCancelled(true);
         }
     }
