@@ -1,5 +1,6 @@
 package net.redpix.ecosystem.commands;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 
@@ -49,10 +50,12 @@ public class CheckCommand implements BasicCommand
 
             player.setAllowFlight(true);
 
+            Title.Times times = Title.Times.times(null, Duration.ofDays(1), null);
+
             player.showTitle(Title.title(
                 Component.text("üʙᴇʀᴘʀüꜰᴜɴɢ", NamedTextColor.RED), 
                 Component.text("ᴅᴜ ᴡüʀᴅᴇѕᴛ ᴢᴜ ᴇɪɴᴇʀ üʙᴇʀᴘʀüꜰᴜɴɢ ᴀᴜѕɢᴇᴡäʜʟᴛ", NamedTextColor.RED),
-                null
+                times 
             ));
 
             player.playSound(Sound.sound(Key.key("block.note_block.basedrum"), Sound.Source.PLAYER, 1f, 1f));
@@ -92,6 +95,6 @@ public class CheckCommand implements BasicCommand
 
     @Override
     public @Nullable String permission() {
-        return "check";
+        return "check.use";
     }
 }

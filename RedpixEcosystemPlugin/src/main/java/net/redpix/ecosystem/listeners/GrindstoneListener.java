@@ -1,8 +1,12 @@
 package net.redpix.ecosystem.listeners;
 
+import org.bukkit.Material;
+import org.bukkit.block.data.type.Grindstone;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockExpEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 
@@ -17,11 +21,9 @@ public class GrindstoneListener implements Listener
     }
 
     @EventHandler
-    public void onGrindstoneXP(PlayerExpChangeEvent e) {
-        Player p = e.getPlayer();
-
-        if (p.getOpenInventory().getTopInventory().getType() == InventoryType.GRINDSTONE) {
-            e.setAmount(0);
+    public void onBlockXP(BlockExpEvent e) {
+        if(e.getBlock().getType() == Material.GRINDSTONE) {
+            e.setExpToDrop(0);
         }
     }
 }
