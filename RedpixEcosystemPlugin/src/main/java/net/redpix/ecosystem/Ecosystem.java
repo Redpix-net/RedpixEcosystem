@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,6 +15,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.redpix.ecosystem.commands.CheckCommand;
 import net.redpix.ecosystem.commands.DiscordCommand;
 import net.redpix.ecosystem.commands.ReportCommand;
+import net.redpix.ecosystem.commands.SupportCommand;
 import net.redpix.ecosystem.listeners.CancelCommand;
 import net.redpix.ecosystem.listeners.FreezePlayer;
 import net.redpix.ecosystem.listeners.GrindstoneListener;
@@ -36,6 +39,8 @@ public class Ecosystem extends JavaPlugin
     private HashMap<Player, Instant> playersInCombat = new HashMap<Player, Instant>();
     private HashMap<Player, Instant> enderPearlCooldown = new HashMap<Player, Instant>();
     private List<Player> playerCheck = new ArrayList<Player>();
+
+    private Inventory supInv = Bukkit.createInventory(null, 27);
 
     @Override
     public void onEnable() {
@@ -62,6 +67,7 @@ public class Ecosystem extends JavaPlugin
                 event.registrar().register("discord", new DiscordCommand(this));
                 event.registrar().register("check", new CheckCommand(this));
                 event.registrar().register("report", new ReportCommand(this));
+                event.registrar().register("support", new SupportCommand(this));
             }
         );
     }
@@ -85,5 +91,9 @@ public class Ecosystem extends JavaPlugin
 
     public CombatTimer getCombatTimer() {
         return combatTimer;
+    }
+
+    public Inventory getSupInv() {
+        return supInv;
     }
 }

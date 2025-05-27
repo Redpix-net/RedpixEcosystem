@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 
 import net.redpix.ecosystem.Ecosystem;
@@ -20,6 +21,10 @@ public class MaceGlow implements Listener
     public void onChestItemTake(InventoryClickEvent e) {
         if (e.getClickedInventory() == null) {
             return;
+        }
+
+        if (e.getInventory().equals(plugin.getSupInv())) {
+            e.setCancelled(true);
         }
 
         if (e.isShiftClick() && e.getClickedInventory() == e.getView().getBottomInventory() && e.getCurrentItem() != null && e.getCurrentItem().getType() == Material.MACE) {
@@ -42,6 +47,13 @@ public class MaceGlow implements Listener
         if (e.getCurrentItem() != null && e.getCurrentItem().getType() == Material.MACE) {
             e.getWhoClicked().setGlowing(true);
             return;
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryDragEvent e) {
+        if (e.getInventory().equals(plugin.getSupInv())) {
+            e.setCancelled(true);
         }
     }
 }
