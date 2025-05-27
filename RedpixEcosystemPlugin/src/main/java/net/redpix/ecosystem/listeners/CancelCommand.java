@@ -18,6 +18,10 @@ public class CancelCommand implements Listener
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
+        if (e.getMessage() != "spawn") {
+            return;
+        }
+
         if (plugin.getPlayersInCombat().containsKey(e.getPlayer())) {
             e.getPlayer().sendMessage(Component.text("Du kannst keine Commands benutzen während der Überprüfung!", NamedTextColor.RED));
             e.setCancelled(true);
