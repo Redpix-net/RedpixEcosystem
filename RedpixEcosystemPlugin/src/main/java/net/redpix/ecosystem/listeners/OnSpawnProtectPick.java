@@ -24,6 +24,8 @@ public class OnSpawnProtectPick implements Listener
 
         ItemMeta holding = e.getPlayer().getInventory().getItemInMainHand().getItemMeta();
 
+        if (holding == null) return;
+
         if (!(holding.getPersistentDataContainer().has(plugin.getZonePickKey(), PersistentDataType.STRING))) return;
 
         if (e.getClickedBlock() == null) return;
@@ -50,6 +52,8 @@ public class OnSpawnProtectPick implements Listener
         if (e.getPlayer().getInventory().getItemInMainHand() == null) return;
 
         ItemMeta holding = e.getPlayer().getInventory().getItemInMainHand().getItemMeta();
+
+        if (holding == null) return;
 
         if (!(holding.getPersistentDataContainer().has(plugin.getZonePickKey(), PersistentDataType.STRING))) return;
 
