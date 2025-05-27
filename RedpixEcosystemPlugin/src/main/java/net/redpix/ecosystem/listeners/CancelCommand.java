@@ -1,6 +1,7 @@
 package net.redpix.ecosystem.listeners;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -16,14 +17,14 @@ public class CancelCommand implements Listener
         this.plugin = plugin;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
     public void onCommand(PlayerCommandPreprocessEvent e) {
-        if (e.getMessage() != "spawn") {
+        if (!e.getMessage().startsWith("/spawn")) {
             return;
         }
 
         if (plugin.getPlayersInCombat().containsKey(e.getPlayer())) {
-            e.getPlayer().sendMessage(Component.text("Du kannst keine Commands benutzen während der Überprüfung!", NamedTextColor.RED));
+            e.getPlayer().sendMessage(Component.text("ᴅᴜ ᴋᴀɴɴѕᴛ ᴋᴇɪɴᴇ ᴄᴏᴍᴍᴀɴᴅѕ ᴡäʜʀᴇɴᴅ ᴅᴇѕ ᴋᴀᴍᴘꜰᴇѕ ʙᴇɴᴜᴛᴢᴛᴇɴ!", NamedTextColor.RED));
             e.setCancelled(true);
         }
     }
