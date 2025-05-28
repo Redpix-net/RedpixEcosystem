@@ -32,6 +32,7 @@ public class OnEnterFight implements Listener
 
         if (plugin.getPlayerCheck().contains(player_target)) {
             e.setDamage(0);
+            return;
         }
 
         if (e.getDamageSource().getDirectEntity() instanceof Player) {

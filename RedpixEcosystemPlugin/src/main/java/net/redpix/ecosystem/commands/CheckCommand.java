@@ -50,7 +50,7 @@ public class CheckCommand implements BasicCommand
 
             player.setAllowFlight(true);
 
-            Title.Times times = Title.Times.times(null, Duration.ofDays(1), null);
+            Title.Times times = Title.Times.times(Duration.ofMillis(1), Duration.ofDays(1), Duration.ofMillis(1));
 
             player.showTitle(Title.title(
                 Component.text("üʙᴇʀᴘʀüꜰᴜɴɢ", NamedTextColor.RED), 
