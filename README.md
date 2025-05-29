@@ -8,6 +8,7 @@
 2. Follow the naming conventions below
 3. Always wait for approval of one additional person of your PR's before merging
 4. Dont Merge or push broken/unfished code (Errors your IDE will tell you, bugs are not meant)
+5. Always give your commits meaningfull context!
 
 # Naming Conventions
 
