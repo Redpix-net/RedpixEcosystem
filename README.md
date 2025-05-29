@@ -1,8 +1,8 @@
 # RedpixEcosystem
 
 # Contribution Rules
-(Please note, following these rules is mandatory!)
-(Bitte beachte, diesen Regeln zu folgen ist pflicht!)
+<p>(Please note, following these rules is mandatory!)</p>
+<p>(Bitte beachte, diesen Regeln zu folgen ist pflicht!)</p>
 
 1. Do not commit to main! Instead create a new branch and merge the branch into main
 2. Follow the naming conventions below
@@ -11,11 +11,11 @@
 
 # Naming Conventions
 
-Creating a new feature
-/feature-{name of the feature}
+<p>Creating a new feature</p>
+<p>/feature-{name of the feature}</p>
 
-Fixing a bug
-/fix-{name of the bug}
+<p>Fixing a bug</p>
+<p>/fix-{name of the bug}</p>
 
-Rewriting a section of code
-/rewrite-{name of the rewrite}
+<p>Rewriting a section of code</p>
+<p>/rewrite-{name of the rewrite}</p>
