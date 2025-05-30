@@ -32,14 +32,6 @@ public class OnLeave implements Listener
             return;
         }
 
-        if (plugin.getPlayersInCombat().containsKey(e.getPlayer())) {
-            e.getPlayer().setHealth(0);
-
-            plugin.getServer().broadcast(
-                Component.text((e.getPlayer().getName() + " ɪѕᴛ ɪᴍ ᴋᴀᴍᴘꜰ ᴠᴇʀʟᴀѕѕᴇɴ!"), NamedTextColor.GREEN)
-            );
-        }
-
         if (plugin.getPlayerCheck().contains(e.getPlayer())) {
             e.getPlayer().ban("Left during check", (Date) null, "");
             plugin.getPlayerCheck().remove(e.getPlayer());
@@ -47,6 +39,16 @@ public class OnLeave implements Listener
             if (plugin.getPlayersInCombat().containsKey(e.getPlayer())) {
                 plugin.getPlayersInCombat().remove(e.getPlayer());
             }
+            
+            return;
+        }
+
+        if (plugin.getPlayersInCombat().containsKey(e.getPlayer())) {
+            e.getPlayer().setHealth(0);
+
+            plugin.getServer().broadcast(
+                Component.text((e.getPlayer().getName() + " ɪѕᴛ ɪᴍ ᴋᴀᴍᴘꜰ ᴠᴇʀʟᴀѕѕᴇɴ!"), NamedTextColor.GREEN)
+            );
         }
     }
 }
