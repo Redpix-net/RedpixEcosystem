@@ -1,6 +1,6 @@
 package net.redpix.ecosystem;
 
-import java.io.ObjectInputFilter.Config;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -18,9 +17,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.mojang.brigadier.tree.LiteralCommandNode;
-
-import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.redpix.ecosystem.commands.AirdropCommand;
@@ -29,11 +25,14 @@ import net.redpix.ecosystem.commands.DiscordCommand;
 import net.redpix.ecosystem.commands.ReportCommand;
 import net.redpix.ecosystem.commands.SpawnProtectCommand;
 import net.redpix.ecosystem.commands.SupportCommand;
+import net.redpix.ecosystem.commands.TempbanCommand;
+import net.redpix.ecosystem.commands.TempmuteCommand;
 import net.redpix.ecosystem.listeners.AirdropListener;
 import net.redpix.ecosystem.listeners.CancelCommand;
 import net.redpix.ecosystem.listeners.FreezePlayer;
 import net.redpix.ecosystem.listeners.GrindstoneListener;
 import net.redpix.ecosystem.listeners.MaceGlow;
+import net.redpix.ecosystem.listeners.MutedPlayersListener;
 import net.redpix.ecosystem.listeners.OnCraft;
 import net.redpix.ecosystem.listeners.OnDeath;
 import net.redpix.ecosystem.listeners.OnDrop;
@@ -57,6 +56,7 @@ public class Ecosystem extends JavaPlugin
 
     private HashMap<Player, Instant> playersInCombat = new HashMap<Player, Instant>();
     private HashMap<Player, Instant> enderPearlCooldown = new HashMap<Player, Instant>();
+    private HashMap<Player, Instant> mutedPlayers = new HashMap<Player, Instant>();
     private List<Player> playerCheck = new ArrayList<Player>();
 
     private HashMap<Player, String> supportTickets = new HashMap<Player, String>();
@@ -103,6 +103,7 @@ public class Ecosystem extends JavaPlugin
         pm.registerEvents(new OnSpawnProtectPick(this), this);
         pm.registerEvents(new SpawnZoneListener(this), this);
         pm.registerEvents(new AirdropListener(this), this);
+        pm.registerEvents(new MutedPlayersListener(this), this);
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
             event -> {
@@ -112,6 +113,8 @@ public class Ecosystem extends JavaPlugin
                 event.registrar().register("support", new SupportCommand(this));
                 event.registrar().register("spawnprotect", new SpawnProtectCommand(this));
                 event.registrar().register(new AirdropCommand(this).createCommand().build());
+                event.registrar().register(new TempbanCommand(this).createCommand().build());
+                event.registrar().register(new TempmuteCommand(this).createCommand().build());
             }
         );
     }
@@ -133,6 +136,10 @@ public class Ecosystem extends JavaPlugin
 
     public HashMap<Player, String> getSupportTickets() {
         return supportTickets;
+    }
+
+    public HashMap<Player, Instant> getMutedPlayers() {
+        return mutedPlayers;
     }
 
     public List<Player> getPlayerCheck() {

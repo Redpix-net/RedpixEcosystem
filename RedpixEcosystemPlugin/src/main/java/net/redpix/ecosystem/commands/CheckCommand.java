@@ -69,13 +69,13 @@ public class CheckCommand implements BasicCommand
                 plugin.getPlayerCheck().remove(player);
                 player.setAllowFlight(false);
                 player.playSound(Sound.sound(Key.key("entity.experience_orb.pickup"), Sound.Source.PLAYER, 1f, 1f));
-                player.hideTitle();;
+                player.clearTitle();
                 break;
             case "deny":
                 plugin.getPlayerCheck().remove(player);
                 player.ban("Cheats found on check", (Date) null, "");
                 player.setAllowFlight(false);
-                player.hideTitle();;
+                player.clearTitle();
                 break;
             default:
                 break;
