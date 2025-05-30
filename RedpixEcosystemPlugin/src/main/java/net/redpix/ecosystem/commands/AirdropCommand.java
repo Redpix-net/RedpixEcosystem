@@ -25,9 +25,11 @@ public class AirdropCommand {
     public LiteralArgumentBuilder<CommandSourceStack> createCommand() {
         return Commands.literal("airdrop")
         .then(Commands.literal("summon")
+            .requires(sender -> sender.getSender().hasPermission("airdrop.summon"))
             .executes(this::executeSummon)
         )
         .then(Commands.literal("create")
+            .requires(sender -> sender.getSender().hasPermission("airdrop.create"))
             .executes(this::executeCreate)
         );
     }
