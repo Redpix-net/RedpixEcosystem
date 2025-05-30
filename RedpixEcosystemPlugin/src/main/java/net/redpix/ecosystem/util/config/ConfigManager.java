@@ -8,20 +8,25 @@ import java.util.Map;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.plugin.Plugin;
+
+import net.redpix.ecosystem.Ecosystem;
 
 public class ConfigManager {
     private HashMap<Class, String> configs = new HashMap<Class, String>();
     private List<File> config_files = new ArrayList<>();
 
-    private final Plugin plugin;
+    private final AirdropConfig airdropConfig;
 
-    public ConfigManager(Plugin plugin) {
+    private final Ecosystem plugin;
+
+    public ConfigManager(Ecosystem plugin) {
         this.plugin = plugin;
+        this.airdropConfig = new AirdropConfig(plugin);
     }
     
     public void register_configs() {
         configs.put(StrikeLightingConfig.class, "strike_lighting.yml");
+        configs.put(AirdropOption.class, "airdrop.yml");
     }
 
     public void init() {
@@ -42,5 +47,9 @@ public class ConfigManager {
                 // TODO: handle exception
             }
         }
+    }
+
+    public AirdropConfig getAirdropConfig() {
+        return airdropConfig;
     }
 }

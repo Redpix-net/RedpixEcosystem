@@ -1,5 +1,6 @@
 package net.redpix.ecosystem;
 
+import java.io.ObjectInputFilter.Config;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -16,13 +18,18 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.mojang.brigadier.tree.LiteralCommandNode;
+
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
+import net.redpix.ecosystem.commands.AirdropCommand;
 import net.redpix.ecosystem.commands.CheckCommand;
 import net.redpix.ecosystem.commands.DiscordCommand;
 import net.redpix.ecosystem.commands.ReportCommand;
 import net.redpix.ecosystem.commands.SpawnProtectCommand;
 import net.redpix.ecosystem.commands.SupportCommand;
+import net.redpix.ecosystem.listeners.AirdropListener;
 import net.redpix.ecosystem.listeners.CancelCommand;
 import net.redpix.ecosystem.listeners.FreezePlayer;
 import net.redpix.ecosystem.listeners.GrindstoneListener;
@@ -38,6 +45,7 @@ import net.redpix.ecosystem.listeners.OnPlace;
 import net.redpix.ecosystem.listeners.OnSpawnProtectPick;
 import net.redpix.ecosystem.listeners.SpawnZoneListener;
 import net.redpix.ecosystem.listeners.SupportInvListener;
+import net.redpix.ecosystem.util.AirdropManager;
 import net.redpix.ecosystem.util.CombatTimer;
 import net.redpix.ecosystem.util.config.ConfigManager;
 
@@ -45,6 +53,7 @@ public class Ecosystem extends JavaPlugin
 {
     private ConfigManager configManager = new ConfigManager(this);
     private CombatTimer combatTimer = new CombatTimer(this);
+    private AirdropManager airdropManager = new AirdropManager(this);
 
     private HashMap<Player, Instant> playersInCombat = new HashMap<Player, Instant>();
     private HashMap<Player, Instant> enderPearlCooldown = new HashMap<Player, Instant>();
@@ -93,6 +102,7 @@ public class Ecosystem extends JavaPlugin
         pm.registerEvents(new SupportInvListener(this), this);
         pm.registerEvents(new OnSpawnProtectPick(this), this);
         pm.registerEvents(new SpawnZoneListener(this), this);
+        pm.registerEvents(new AirdropListener(this), this);
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
             event -> {
@@ -101,6 +111,7 @@ public class Ecosystem extends JavaPlugin
                 event.registrar().register("report", new ReportCommand(this));
                 event.registrar().register("support", new SupportCommand(this));
                 event.registrar().register("spawnprotect", new SpawnProtectCommand(this));
+                event.registrar().register(new AirdropCommand(this).createCommand().build());
             }
         );
     }
@@ -146,5 +157,13 @@ public class Ecosystem extends JavaPlugin
 
     public NamespacedKey getZonePickKey() {
         return zonePickKey;
+    }
+
+    public AirdropManager getAirdropManager() {
+        return airdropManager;
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
     }
 }
