@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.redpix.ecosystem.Ecosystem;
+import net.redpix.ecosystem.util.config.MutedPlayersConfig;
 
 public class MutedPlayersListener implements Listener
 {
@@ -27,6 +28,7 @@ public class MutedPlayersListener implements Listener
 
         Player p = e.getPlayer();
         HashMap<Player, Instant> mutedPlayers = plugin.getMutedPlayers();
+        MutedPlayersConfig mutedPlayersConfig = plugin.getConfigManager().getMutedPlayersConfig();
 
         long time = Duration.between(Instant.now(), mutedPlayers.get(p)).getSeconds();
 
@@ -36,5 +38,6 @@ public class MutedPlayersListener implements Listener
         }
 
         mutedPlayers.remove(p);
+        mutedPlayersConfig.removePlayer(p);
     }
 }

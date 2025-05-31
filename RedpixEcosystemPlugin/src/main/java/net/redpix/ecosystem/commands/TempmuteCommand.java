@@ -2,9 +2,9 @@ package net.redpix.ecosystem.commands;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.TemporalUnit;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.mojang.brigadier.Command;
@@ -16,6 +16,8 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.redpix.ecosystem.Ecosystem;
+import net.redpix.ecosystem.util.config.MutedPlayersConfig;
+import net.redpix.ecosystem.util.config.TempBanMuteConfig;
 
 public class TempmuteCommand {
     private final Ecosystem plugin;
@@ -45,9 +47,24 @@ public class TempmuteCommand {
         String reason = ctx.getArgument("reason", String.class);
         
         Player p = Bukkit.getPlayer(player_name);
+        CommandSender sender = ctx.getSource().getSender();
+
+        TempBanMuteConfig configManager = plugin.getConfigManager().getTempBanMuteConfig();
+        MutedPlayersConfig mutedPlayers = plugin.getConfigManager().getMutedPlayersConfig();
 
         if (p == null) {
+            sender.sendMessage(configManager.getMessage("mute-no-player-found", p));
+
             return Command.SINGLE_SUCCESS;
+        }
+
+        if (plugin.getMutedPlayers().containsKey(p)) {
+            long time_test = Duration.between(Instant.now(), plugin.getMutedPlayers().get(p)).getSeconds();
+
+            if (time_test <= 0) {
+                plugin.getMutedPlayers().remove(p);
+                mutedPlayers.removePlayer(p);
+            }
         }
         
         Instant time = Instant.now()
@@ -55,13 +72,20 @@ public class TempmuteCommand {
             .plus(Duration.ofMinutes(minutes))
             .plus(Duration.ofHours(hours))
             .plus(Duration.ofDays(days));
+
         
         if (plugin.getMutedPlayers().containsKey(p)) {
             // TODO! send message to Sender that player is already muted!
+            sender.sendMessage(configManager.getMessage("mute-player-already-muted", p));
             return Command.SINGLE_SUCCESS;
         }
 
         plugin.getMutedPlayers().put(p, time);
+        mutedPlayers.addPlayer(p, time);
+
+        sender.sendMessage(configManager.getMessage("mute-player-has-been-muted", p));
+
+        plugin.getServer().broadcast(configManager.getMessage("mute-broadcast", p));
         
         return Command.SINGLE_SUCCESS;
     }

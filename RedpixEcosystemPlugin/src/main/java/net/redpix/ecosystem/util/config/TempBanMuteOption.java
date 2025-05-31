@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-public class SpawnProtectConfig implements ConfigurationSerializable {
+public class TempBanMuteOption implements ConfigurationSerializable {
 
     private String placeholder;
 
-    public SpawnProtectConfig(String placeholder) {
+    public TempBanMuteOption(String placeholder) {
         this.placeholder = placeholder;
     }
 
@@ -21,8 +21,8 @@ public class SpawnProtectConfig implements ConfigurationSerializable {
         return data;
     }
 
-    public static SpawnProtectConfig deserialize(Map<String, Object> args) {
-        return new SpawnProtectConfig (
+    public static TempBanMuteOption deserialize(Map<String, Object> args) {
+        return new TempBanMuteOption (
                 (String) args.get("placeholder")
         );
     }

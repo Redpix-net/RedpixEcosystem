@@ -1,0 +1,20 @@
+# PLAYER MUT AND BAN CONFIG
+
+# online editor
+# https://webui.advntr.dev
+#
+# docs
+# https://docs.advntr.dev/minimessage/format.html
+
+### You can add %player% to insert the targets name in the message
+tempban-mute:
+  #  Mute Messages
+  mute-no-player-found: ""
+  mute-player-already-muted: ""
+  mute-broadcast: ""
+  mute-player-has-been-muted: "<red>The Player: %player% has been muted</red>"
+  #  Ban Messages
+  ban-no-player-found: ""
+  ban-broadcast: ""
+  ban-player-has-been-banned: "<red>The Player: %player% has been banned</red>" 
+  

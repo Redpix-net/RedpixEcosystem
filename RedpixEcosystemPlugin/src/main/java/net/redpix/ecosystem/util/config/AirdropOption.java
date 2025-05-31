@@ -21,8 +21,8 @@ public class AirdropOption implements ConfigurationSerializable {
         return data;
     }
 
-    public static StrikeLightingConfig deserialize(Map<String, Object> args) {
-        return new StrikeLightingConfig (
+    public static AirdropOption deserialize(Map<String, Object> args) {
+        return new AirdropOption (
                 (String) args.get("placeholder")
         );
     }

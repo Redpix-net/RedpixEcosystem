@@ -3,6 +3,7 @@ package net.redpix.ecosystem.commands;
 import java.time.Duration;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.mojang.brigadier.Command;
@@ -14,6 +15,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.redpix.ecosystem.Ecosystem;
+import net.redpix.ecosystem.util.config.TempBanMuteConfig;
 
 public class TempbanCommand {
     private final Ecosystem plugin;
@@ -43,8 +45,13 @@ public class TempbanCommand {
         String reason = ctx.getArgument("reason", String.class);
         
         Player p = Bukkit.getPlayer(player_name);
+        CommandSender sender = ctx.getSource().getSender();
+
+        TempBanMuteConfig configManager = plugin.getConfigManager().getTempBanMuteConfig();
 
         if (p == null) {
+            sender.sendMessage(configManager.getMessage("ban-no-player-found", p));
+
             return Command.SINGLE_SUCCESS;
         }
         
@@ -56,7 +63,9 @@ public class TempbanCommand {
 
         p.ban(reason, time, ctx.getSource().getSender().getName());
 
-        plugin.getServer().broadcast();
+        sender.sendMessage(configManager.getMessage("ban-player-has-been-banned", p));
+
+        plugin.getServer().broadcast(configManager.getMessage("ban-broadcast", p));
 
         return Command.SINGLE_SUCCESS;
     }

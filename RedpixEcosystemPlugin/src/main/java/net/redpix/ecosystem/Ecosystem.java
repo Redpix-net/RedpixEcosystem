@@ -1,6 +1,5 @@
 package net.redpix.ecosystem;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.redpix.ecosystem.commands.AirdropCommand;
 import net.redpix.ecosystem.commands.CheckCommand;
 import net.redpix.ecosystem.commands.DiscordCommand;
@@ -56,7 +56,7 @@ public class Ecosystem extends JavaPlugin
 
     private HashMap<Player, Instant> playersInCombat = new HashMap<Player, Instant>();
     private HashMap<Player, Instant> enderPearlCooldown = new HashMap<Player, Instant>();
-    private HashMap<Player, Instant> mutedPlayers = new HashMap<Player, Instant>();
+    private HashMap<Player, Instant> mutedPlayers;
     private List<Player> playerCheck = new ArrayList<Player>();
 
     private HashMap<Player, String> supportTickets = new HashMap<Player, String>();
@@ -67,6 +67,8 @@ public class Ecosystem extends JavaPlugin
     private ItemStack editPick;
 
     private final NamespacedKey zonePickKey = new NamespacedKey(this, "zone_pick");
+
+    private final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     @Override
     public void onEnable() {
@@ -83,6 +85,8 @@ public class Ecosystem extends JavaPlugin
         editPick.setItemMeta(edit_pick_meta);
 
         configManager.init();
+
+        this.mutedPlayers = configManager.getMutedPlayersConfig().getPlayers();
 
         PluginManager pm = getServer().getPluginManager();
 
@@ -172,5 +176,9 @@ public class Ecosystem extends JavaPlugin
 
     public ConfigManager getConfigManager() {
         return configManager;
+    }
+
+    public MiniMessage getMiniMessage() {
+        return miniMessage;
     }
 }
