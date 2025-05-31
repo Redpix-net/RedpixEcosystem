@@ -7,14 +7,15 @@
 # https://docs.advntr.dev/minimessage/format.html
 
 ### You can add %player% to insert the targets name in the message
+### You can add %reason% to insert the reason for the mute or ban into the message
 tempban-mute:
   #  Mute Messages
   mute-no-player-found: ""
   mute-player-already-muted: ""
   mute-broadcast: ""
-  mute-player-has-been-muted: "<red>The Player: %player% has been muted</red>"
+  mute-player-has-been-muted: "<red>The Player: %player% has been muted because: %reason% </red>"
   #  Ban Messages
   ban-no-player-found: ""
   ban-broadcast: ""
-  ban-player-has-been-banned: "<red>The Player: %player% has been banned</red>" 
+  ban-player-has-been-banned: "<red>The Player: %player% has been banned because: %reason% </red>" 
   

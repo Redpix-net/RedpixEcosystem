@@ -18,11 +18,13 @@ public class TempBanMuteConfig {
         this.plugin = plugin;
     }
 
-    public Component getMessage(String message, Player player) {
+    public Component getMessage(String message, Player player, String reason) {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
         MiniMessage miniMessage = plugin.getMiniMessage();
-        String config_message = config.getString(String.format("tempban-mute.%s", message)).replace("%player%", player.getName());
+        String config_message = config.getString(String.format("tempban-mute.%s", message))
+        .replace("%player%", player.getName())
+        .replace("%reason%", reason);
         Component parse = miniMessage.deserialize(config_message);
         
         return parse;

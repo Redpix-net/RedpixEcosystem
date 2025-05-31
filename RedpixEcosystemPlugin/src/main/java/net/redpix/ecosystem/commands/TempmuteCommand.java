@@ -53,7 +53,7 @@ public class TempmuteCommand {
         MutedPlayersConfig mutedPlayers = plugin.getConfigManager().getMutedPlayersConfig();
 
         if (p == null) {
-            sender.sendMessage(configManager.getMessage("mute-no-player-found", p));
+            sender.sendMessage(configManager.getMessage("mute-no-player-found", p, reason));
 
             return Command.SINGLE_SUCCESS;
         }
@@ -76,16 +76,16 @@ public class TempmuteCommand {
         
         if (plugin.getMutedPlayers().containsKey(p)) {
             // TODO! send message to Sender that player is already muted!
-            sender.sendMessage(configManager.getMessage("mute-player-already-muted", p));
+            sender.sendMessage(configManager.getMessage("mute-player-already-muted", p, reason));
             return Command.SINGLE_SUCCESS;
         }
 
         plugin.getMutedPlayers().put(p, time);
         mutedPlayers.addPlayer(p, time);
 
-        sender.sendMessage(configManager.getMessage("mute-player-has-been-muted", p));
+        sender.sendMessage(configManager.getMessage("mute-player-has-been-muted", p, reason));
 
-        plugin.getServer().broadcast(configManager.getMessage("mute-broadcast", p));
+        plugin.getServer().broadcast(configManager.getMessage("mute-broadcast", p, reason));
         
         return Command.SINGLE_SUCCESS;
     }

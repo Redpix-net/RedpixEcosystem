@@ -50,7 +50,7 @@ public class TempbanCommand {
         TempBanMuteConfig configManager = plugin.getConfigManager().getTempBanMuteConfig();
 
         if (p == null) {
-            sender.sendMessage(configManager.getMessage("ban-no-player-found", p));
+            sender.sendMessage(configManager.getMessage("ban-no-player-found", p, reason));
 
             return Command.SINGLE_SUCCESS;
         }
@@ -63,9 +63,9 @@ public class TempbanCommand {
 
         p.ban(reason, time, ctx.getSource().getSender().getName());
 
-        sender.sendMessage(configManager.getMessage("ban-player-has-been-banned", p));
+        sender.sendMessage(configManager.getMessage("ban-player-has-been-banned", p, reason));
 
-        plugin.getServer().broadcast(configManager.getMessage("ban-broadcast", p));
+        plugin.getServer().broadcast(configManager.getMessage("ban-broadcast", p, reason));
 
         return Command.SINGLE_SUCCESS;
     }
