@@ -63,14 +63,17 @@ public class TempbanCommand {
         int time_length = Integer.parseInt(time.substring(0, time.length() - 1));
 
         switch (time.charAt(time.length() - 1)) {
+            case 'm':
+                time_ban = time_ban.plus(Duration.ofDays(time_length * 31));
+                break;
+            case 'w':
+                time_ban = time_ban.plus(Duration.ofDays(time_length * 7));
+                break;
             case 'd':
                 time_ban = time_ban.plus(Duration.ofDays(time_length));
                 break;
             case 'h':
                 time_ban = time_ban.plus(Duration.ofHours(time_length));
-                break;
-            case 'm':
-                time_ban = time_ban.plus(Duration.ofMinutes(time_length));
                 break;
             case 's':
                 time_ban = time_ban.plus(Duration.ofSeconds(time_length));

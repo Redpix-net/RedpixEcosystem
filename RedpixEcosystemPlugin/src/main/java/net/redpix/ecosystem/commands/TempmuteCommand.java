@@ -80,14 +80,17 @@ public class TempmuteCommand {
         int time_length = Integer.parseInt(time.substring(0, time.length() - 1));
 
         switch (time.charAt(time.length() - 1)) {
+            case 'm':
+                time_mute = time_mute.plus(Duration.ofDays(time_length * 31));
+                break;
+            case 'w':
+                time_mute = time_mute.plus(Duration.ofDays(time_length * 7));
+                break;
             case 'd':
                 time_mute = time_mute.plus(Duration.ofDays(time_length));
                 break;
             case 'h':
                 time_mute = time_mute.plus(Duration.ofHours(time_length));
-                break;
-            case 'm':
-                time_mute = time_mute.plus(Duration.ofMinutes(time_length));
                 break;
             case 's':
                 time_mute = time_mute.plus(Duration.ofSeconds(time_length));
