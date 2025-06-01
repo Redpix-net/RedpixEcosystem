@@ -14,8 +14,10 @@ tempban-mute:
   mute-player-already-muted: ""
   mute-broadcast: ""
   mute-player-has-been-muted: "<red>The Player: %player% has been muted because: %reason% </red>"
+  mute-wrong-time-input: ""
   #  Ban Messages
   ban-no-player-found: ""
   ban-broadcast: ""
   ban-player-has-been-banned: "<red>The Player: %player% has been banned because: %reason% </red>" 
+  ban-wrong-time-input: ""
   

@@ -30,20 +30,14 @@ public class TempmuteCommand {
         return Commands.literal("tempmute")
         .requires(sender -> sender.getSender().hasPermission("tempmute.use"))
         .then(Commands.argument("player", StringArgumentType.word())
-            .then(Commands.argument("seconds", IntegerArgumentType.integer())
-                .then(Commands.argument("minutes", IntegerArgumentType.integer())
-                    .then(Commands.argument("hours", IntegerArgumentType.integer())
-                        .then(Commands.argument("days", IntegerArgumentType.integer())
-                            .then(Commands.argument("reason", StringArgumentType.greedyString())
-                            .executes(this::executeTempmute)))))));
+            .then(Commands.argument("time", StringArgumentType.word())
+                .then(Commands.argument("reason", StringArgumentType.greedyString())
+                    .executes(this::executeTempmute))));
     }
 
     private int executeTempmute(CommandContext<CommandSourceStack> ctx) {
         String player_name = ctx.getArgument("player", String.class);
-        int seconds = ctx.getArgument("seconds", Integer.class);
-        int minutes = ctx.getArgument("minutes", Integer.class);
-        int hours = ctx.getArgument("hours", Integer.class);
-        int days = ctx.getArgument("days", Integer.class);
+        String time = ctx.getArgument("time", String.class);
         String reason = ctx.getArgument("reason", String.class);
         
         Player p = Bukkit.getPlayer(player_name);
@@ -57,7 +51,7 @@ public class TempmuteCommand {
 
             return Command.SINGLE_SUCCESS;
         }
-
+        
         if (plugin.getMutedPlayers().containsKey(p)) {
             long time_test = Duration.between(Instant.now(), plugin.getMutedPlayers().get(p)).getSeconds();
 
@@ -67,21 +61,40 @@ public class TempmuteCommand {
             }
         }
         
-        Instant time = Instant.now()
-            .plusSeconds(seconds)
-            .plus(Duration.ofMinutes(minutes))
-            .plus(Duration.ofHours(hours))
-            .plus(Duration.ofDays(days));
-
-        
         if (plugin.getMutedPlayers().containsKey(p)) {
             // TODO! send message to Sender that player is already muted!
             sender.sendMessage(configManager.getMessage("mute-player-already-muted", p, reason));
             return Command.SINGLE_SUCCESS;
         }
 
-        plugin.getMutedPlayers().put(p, time);
-        mutedPlayers.addPlayer(p, time);
+        if (time.length() <= 1) {
+            sender.sendMessage(configManager.getMessage("mute-wrong-time-input", p, reason));
+            return Command.SINGLE_SUCCESS;
+        }
+
+        Instant time_mute = Instant.now();
+        int time_length = Integer.parseInt(time.substring(0, time.length() - 1));
+
+        switch (time.charAt(time.length() - 1)) {
+            case 'd':
+                time_mute = time_mute.plus(Duration.ofDays(time_length));
+                break;
+            case 'h':
+                time_mute = time_mute.plus(Duration.ofHours(time_length));
+                break;
+            case 'm':
+                time_mute = time_mute.plus(Duration.ofMinutes(time_length));
+                break;
+            case 's':
+                time_mute = time_mute.plus(Duration.ofSeconds(time_length));
+                break;
+            default: 
+                sender.sendMessage(configManager.getMessage("mute-wrong-time-input", p, reason));
+                return Command.SINGLE_SUCCESS;
+        }
+
+        plugin.getMutedPlayers().put(p, time_mute);
+        mutedPlayers.addPlayer(p, time_mute);
 
         sender.sendMessage(configManager.getMessage("mute-player-has-been-muted", p, reason));
 

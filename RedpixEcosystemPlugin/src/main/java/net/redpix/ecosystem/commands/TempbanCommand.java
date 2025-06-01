@@ -1,13 +1,13 @@
 package net.redpix.ecosystem.commands;
 
 import java.time.Duration;
+import java.time.Instant;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -28,20 +28,14 @@ public class TempbanCommand {
         return Commands.literal("tempban")
         .requires(sender -> sender.getSender().hasPermission("tempban.use"))
         .then(Commands.argument("player", StringArgumentType.word())
-            .then(Commands.argument("seconds", IntegerArgumentType.integer())
-                .then(Commands.argument("minutes", IntegerArgumentType.integer())
-                    .then(Commands.argument("hours", IntegerArgumentType.integer())
-                        .then(Commands.argument("days", IntegerArgumentType.integer())
-                            .then(Commands.argument("reason", StringArgumentType.greedyString())
-                            .executes(this::executeTempban)))))));
+            .then(Commands.argument("time", StringArgumentType.word())
+                .then(Commands.argument("reason", StringArgumentType.greedyString())
+                    .executes(this::executeTempban))));
     }
 
     private int executeTempban(CommandContext<CommandSourceStack> ctx) {
         String player_name = ctx.getArgument("player", String.class);
-        int seconds = ctx.getArgument("seconds", Integer.class);
-        int minutes = ctx.getArgument("minutes", Integer.class);
-        int hours = ctx.getArgument("hours", Integer.class);
-        int days = ctx.getArgument("days", Integer.class);
+        String time = ctx.getArgument("time", String.class);
         String reason = ctx.getArgument("reason", String.class);
         
         Player p = Bukkit.getPlayer(player_name);
@@ -55,13 +49,33 @@ public class TempbanCommand {
             return Command.SINGLE_SUCCESS;
         }
         
-        Duration time = Duration.ZERO
-            .plusSeconds(seconds)
-            .plusMinutes(minutes)
-            .plusHours(hours)
-            .plusDays(days);
+        if (time.length() <= 1) {
+            sender.sendMessage(configManager.getMessage("ban-wrong-time-input", p, reason));
+            return Command.SINGLE_SUCCESS;
+        }
 
-        p.ban(reason, time, ctx.getSource().getSender().getName());
+        Instant time_ban = Instant.now();
+        int time_length = Integer.parseInt(time.substring(0, time.length() - 1));
+
+        switch (time.charAt(time.length() - 1)) {
+            case 'd':
+                time_ban = time_ban.plus(Duration.ofDays(time_length));
+                break;
+            case 'h':
+                time_ban = time_ban.plus(Duration.ofHours(time_length));
+                break;
+            case 'm':
+                time_ban = time_ban.plus(Duration.ofMinutes(time_length));
+                break;
+            case 's':
+                time_ban = time_ban.plus(Duration.ofSeconds(time_length));
+                break;
+            default: 
+                sender.sendMessage(configManager.getMessage("ban-wrong-time-input", p, reason));
+                return Command.SINGLE_SUCCESS;
+        }
+
+        p.ban(reason, time_ban, ctx.getSource().getSender().getName());
 
         sender.sendMessage(configManager.getMessage("ban-player-has-been-banned", p, reason));
 
