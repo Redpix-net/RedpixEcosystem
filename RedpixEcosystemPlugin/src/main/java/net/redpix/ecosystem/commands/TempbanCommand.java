@@ -2,6 +2,8 @@ package net.redpix.ecosystem.commands;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -11,6 +13,8 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -28,6 +32,7 @@ public class TempbanCommand {
         return Commands.literal("tempban")
         .requires(sender -> sender.getSender().hasPermission("tempban.use"))
         .then(Commands.argument("player", StringArgumentType.word())
+            .suggests(this::getPlayerSuggestions)
             .then(Commands.argument("time", StringArgumentType.word())
                 .then(Commands.argument("reason", StringArgumentType.greedyString())
                     .executes(this::executeTempban))));
@@ -82,5 +87,15 @@ public class TempbanCommand {
         plugin.getServer().broadcast(configManager.getMessage("ban-broadcast", p, reason));
 
         return Command.SINGLE_SUCCESS;
+    }
+
+    private CompletableFuture<Suggestions> getPlayerSuggestions(CommandContext<CommandSourceStack> ctx, SuggestionsBuilder builder) {
+        List<String> players = Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+
+        players.stream()
+            .filter(entry -> entry.toLowerCase().startsWith(builder.getRemainingLowerCase()))
+            .forEach(builder::suggest);
+
+        return builder.buildFuture();
     }
 }
