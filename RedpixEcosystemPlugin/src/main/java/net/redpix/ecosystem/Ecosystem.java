@@ -67,6 +67,8 @@ public class Ecosystem extends JavaPlugin
     private ItemStack editPick;
 
     private final NamespacedKey zonePickKey = new NamespacedKey(this, "zone_pick");
+    // yep.... i'm doing it this way... dont complain
+    private final NamespacedKey airdropmenuKey = new NamespacedKey(this, "airdrop");
 
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
 
@@ -168,6 +170,10 @@ public class Ecosystem extends JavaPlugin
 
     public NamespacedKey getZonePickKey() {
         return zonePickKey;
+    }
+
+    public NamespacedKey getAirdropKey() {
+        return airdropmenuKey;
     }
 
     public AirdropManager getAirdropManager() {
