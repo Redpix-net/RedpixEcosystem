@@ -116,7 +116,6 @@ public class AirdropInventory implements InventoryHolder {
         defaultInv();
     }
 
-
     // creates black border around inv
     private void defaultInv() {
         ItemStack border = new ItemStack(BORDER);

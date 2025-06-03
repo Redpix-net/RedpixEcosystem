@@ -9,6 +9,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.redpix.ecosystem.Ecosystem;
 import net.redpix.ecosystem.util.AirdropInventory;
 import net.redpix.ecosystem.util.AirdropInventory.InventoryState;
@@ -49,6 +52,8 @@ public class AirdropListener implements Listener
                     manager.saveToAirdrop();;
                     break;
                 case "name":
+                    inv.close();
+                    manager.getInventory().setState(InventoryState.SETTING_NAME);
                     break;
                 case "content":
                     inv.close();
@@ -98,5 +103,22 @@ public class AirdropListener implements Listener
         }
         
         return true;
+    }
+
+    @EventHandler
+    public void playerChatEvent(AsyncChatEvent e) {
+        Player p = e.getPlayer();
+
+        AirdropManager manager = plugin.getAirdropManager();
+        
+        if (manager.getInventory().getState() != InventoryState.SETTING_NAME) {
+            return;
+        }
+
+        String message = LegacyComponentSerializer.legacyAmpersand().serialize(e.message());
+
+        manager.getInventory().setName(message);
+
+        e.setCancelled(true);
     }
 }

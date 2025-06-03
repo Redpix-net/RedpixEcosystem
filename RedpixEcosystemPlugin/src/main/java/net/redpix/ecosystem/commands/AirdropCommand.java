@@ -3,11 +3,11 @@ package net.redpix.ecosystem.commands;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Barrel;
-import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 
@@ -26,7 +26,8 @@ public class AirdropCommand {
         return Commands.literal("airdrop")
         .then(Commands.literal("summon")
             .requires(sender -> sender.getSender().hasPermission("airdrop.summon"))
-            .executes(this::executeSummon)
+            .then(Commands.argument("name", StringArgumentType.word())
+                .executes(this::executeSummon))
         )
         .then(Commands.literal("create")
             .requires(sender -> sender.getSender().hasPermission("airdrop.create"))
@@ -35,6 +36,8 @@ public class AirdropCommand {
     }
 
     private int executeSummon(CommandContext<CommandSourceStack> ctx) {
+        String name = ctx.getArgument("name", String.class);
+
         Player p = (Player) ctx.getSource().getSender();
 
         Location loc = p.getLocation();
@@ -42,7 +45,7 @@ public class AirdropCommand {
 
         Barrel airdrop = (Barrel) loc.getBlock().getState();
 
-        ItemStack[] items = plugin.getConfigManager().getAirdropConfig().getContent("test-1");
+        ItemStack[] items = plugin.getConfigManager().getAirdropConfig().getContent(name);
 
         airdrop.getInventory().setContents(items);
 
