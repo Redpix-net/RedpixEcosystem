@@ -4,15 +4,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import net.redpix.ecosystem.Ecosystem;
 import net.redpix.ecosystem.util.AirdropInventory;
-import net.redpix.ecosystem.util.AirdropManager;
 import net.redpix.ecosystem.util.AirdropInventory.InventoryState;
+import net.redpix.ecosystem.util.AirdropManager;
 
 public class AirdropListener implements Listener
 {
@@ -33,34 +33,38 @@ public class AirdropListener implements Listener
             return;
         }
 
-        switch (manager.getInventory().getState()) {
-            case SETTING_NAME:
-                break;
-            case SETTING_CONTENTS:
-                break;
-            case DEFAULT:
-                e.setCancelled(true);
-                break;
-        }
 
         ItemStack item = e.getCurrentItem();
+
 
         if (item == null) {
             return;
         }
+        
+        // this not only bad code but also not really expandable, pls stop... OR DONT I GUESS
+        if (item.getPersistentDataContainer().has(plugin.getAirdropKey(), PersistentDataType.STRING)) {
+            switch (item.getPersistentDataContainer().get(plugin.getAirdropKey(), PersistentDataType.STRING)) {
+                case "save":
+                    break;
+                case "name":
+                    break;
+                case "content":
+                    inv.close();
+                    manager.getInventory().setState(InventoryState.SETTING_CONTENTS);
+                    manager.openMenu(p);
 
-        switch (item.getType()) {
-            case CHEST:
-                inv.close();
-                manager.getInventory().setState(InventoryState.SETTING_CONTENTS);
-                manager.openMenu(p);
-                break;
-            case OAK_SIGN:
-                inv.close();
-                manager.getInventory().setState(InventoryState.SETTING_NAME);
-                break;
-            default:
-                return;
+                    break;
+                case "back":
+                    inv.close();
+                    manager.getInventory().setState(InventoryState.DEFAULT);
+                    manager.openMenu(p);
+
+                    break;
+                default:
+                    break;
+            }
+
+            e.setCancelled(true);
         }
     }
 

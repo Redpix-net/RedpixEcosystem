@@ -67,8 +67,18 @@ public class AirdropInventory implements InventoryHolder {
         return name;
     }
 
+    // should i split this up in multiple InventoryHolders? yes...
     private void setContentInv() {
         inventory.clear();
+            
+        ItemStack back = new ItemStack(Material.ARROW);
+        ItemMeta back_meta =  back.getItemMeta();
+        back_meta.getPersistentDataContainer().set(plugin.getAirdropKey(), PersistentDataType.STRING, "back");
+        back.setItemMeta(back_meta);
+
+        inventory.setItem(37, back);
+
+        defaultInv();
     }
 
     private void setMainInv() {
@@ -85,8 +95,14 @@ public class AirdropInventory implements InventoryHolder {
         n_meta.getPersistentDataContainer().set(plugin.getAirdropKey(), PersistentDataType.STRING, "name");
         open_name.setItemMeta(n_meta);
 
+        ItemStack save = new ItemStack(Material.EMERALD_BLOCK);
+        ItemMeta save_meta =  save.getItemMeta();
+        save_meta.getPersistentDataContainer().set(plugin.getAirdropKey(), PersistentDataType.STRING, "save");
+        save.setItemMeta(save_meta);
+
         inventory.setItem(12, open_content);
         inventory.setItem(14, open_name);
+        inventory.setItem(43, save);
 
         defaultInv();
     }
