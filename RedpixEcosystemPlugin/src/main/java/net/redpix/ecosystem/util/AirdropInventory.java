@@ -139,6 +139,12 @@ public class AirdropInventory implements InventoryHolder {
         return new_content;
     }
 
+    public void reset() {
+        this.contentBuffer.clear();
+        this.name = "";
+        this.state = InventoryState.DEFAULT;
+    }
+
     @Override
     public Inventory getInventory() {
         switch (state) {

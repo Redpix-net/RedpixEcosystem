@@ -1,10 +1,6 @@
 package net.redpix.ecosystem.commands;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Barrel;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -40,14 +36,7 @@ public class AirdropCommand {
 
         Player p = (Player) ctx.getSource().getSender();
 
-        Location loc = p.getLocation();
-        loc.getBlock().setType(Material.BARREL);
-
-        Barrel airdrop = (Barrel) loc.getBlock().getState();
-
-        ItemStack[] items = plugin.getConfigManager().getAirdropConfig().getContent(name);
-
-        airdrop.getInventory().setContents(items);
+        plugin.getAirdropManager().summon(p, name);
 
         return Command.SINGLE_SUCCESS;
     }

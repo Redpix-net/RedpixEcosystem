@@ -18,6 +18,7 @@ public class ConfigManager {
     private final AirdropConfig airdropConfig;
     private final TempBanMuteConfig tempBanMuteConfig;
     private final MutedPlayersConfig mutedPlayersConfig;
+    private final AirdropSettingsConfig airdropSettingsConfig;
 
     private final Ecosystem plugin;
 
@@ -26,6 +27,7 @@ public class ConfigManager {
         this.airdropConfig = new AirdropConfig(plugin);
         this.tempBanMuteConfig = new TempBanMuteConfig(plugin);
         this.mutedPlayersConfig = new MutedPlayersConfig(plugin);
+        this.airdropSettingsConfig = new AirdropSettingsConfig(plugin);
     }
     
     public void register_configs() {
@@ -33,6 +35,7 @@ public class ConfigManager {
         configs.put(AirdropOption.class, "airdrop.yml");
         configs.put(TempBanMuteOption.class, "tempban-mute.yml");
         configs.put(MutedPlayersOption.class, "muted-player.yml");
+        configs.put(AirdropSettingsOption.class, "airdrop-config.yml");
     }
 
     public void init() {
@@ -66,5 +69,9 @@ public class ConfigManager {
 
     public MutedPlayersConfig getMutedPlayersConfig() {
         return mutedPlayersConfig;
+    }
+
+    public AirdropSettingsConfig getAirdropSettingsConfig() {
+        return airdropSettingsConfig;
     }
 }
