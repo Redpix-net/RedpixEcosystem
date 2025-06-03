@@ -4,6 +4,7 @@ package net.redpix.ecosystem.util;
 
 import java.util.HashMap;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.chat.hover.content.Item;
 import net.redpix.ecosystem.Ecosystem;
 
 
@@ -30,17 +32,17 @@ public class AirdropInventory implements InventoryHolder {
     private HashMap<String, Inventory> airdropInventorys = new HashMap<>();
     private final Ecosystem plugin;
 
-    private String name;
+    private Inventory contentBuffer; 
+
+    private String name = "test-1";
 
     private InventoryState state = InventoryState.DEFAULT;
 
     public AirdropInventory(Ecosystem plugin) {
         this.plugin = plugin;
 
-        Inventory inventory = plugin.getServer().createInventory(this, 54);
-
-
-        this.inventory = inventory;
+        this.inventory = plugin.getServer().createInventory(this, 54);
+        this.contentBuffer = plugin.getServer().createInventory(this, 54);
     }
     
     public void createAirdropInventory(String name, Inventory inv) {
@@ -69,16 +71,23 @@ public class AirdropInventory implements InventoryHolder {
 
     // should i split this up in multiple InventoryHolders? yes...
     private void setContentInv() {
-        inventory.clear();
-            
+        int[] border_pos = {27,28,29,30,31,32,33,34,35,36,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53};
+
+        ItemStack border = new ItemStack(BORDER);
+        ItemMeta border_meta = border.getItemMeta();
+        border_meta.displayName(Component.text(""));
+        border.setItemMeta(border_meta);
+        
+        for (int i : border_pos) {
+            contentBuffer.setItem(i, border);
+        }
+
         ItemStack back = new ItemStack(Material.ARROW);
         ItemMeta back_meta =  back.getItemMeta();
         back_meta.getPersistentDataContainer().set(plugin.getAirdropKey(), PersistentDataType.STRING, "back");
         back.setItemMeta(back_meta);
 
-        inventory.setItem(37, back);
-
-        defaultInv();
+        contentBuffer.setItem(37, back);
     }
 
     private void setMainInv() {
@@ -120,20 +129,31 @@ public class AirdropInventory implements InventoryHolder {
         }
     }
 
+    public ItemStack[] getContent() {
+        ItemStack[] content = contentBuffer.getContents();
+        ItemStack[] new_content = new ItemStack[27];
+
+        for (int i = 0; i < 27; i++) {
+            new_content[i] = content[i];
+        }
+
+        return new_content;
+    }
+
     @Override
     public Inventory getInventory() {
         switch (state) {
             case DEFAULT:
                 setMainInv();
-                break;
+                return this.inventory;
             case SETTING_NAME:
-                break;
+                return this.inventory;
             case SETTING_CONTENTS:
                 setContentInv();
-                break;
+                return this.contentBuffer;
+            default:
+                return this.inventory;
         }
-
-        return this.inventory;
     }
 }
 

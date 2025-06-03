@@ -22,6 +22,6 @@ public class AirdropManager {
     }
 
     public void saveToAirdrop() {
-        plugin.getConfigManager().getAirdropConfig().saveAirdrop(inv.getInventory().getContents(), inv.getName());
+        plugin.getConfigManager().getAirdropConfig().saveAirdrop(inv.getContent(), inv.getName());
     }
 }

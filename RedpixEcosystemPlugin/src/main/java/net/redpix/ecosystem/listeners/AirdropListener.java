@@ -45,6 +45,8 @@ public class AirdropListener implements Listener
         if (item.getPersistentDataContainer().has(plugin.getAirdropKey(), PersistentDataType.STRING)) {
             switch (item.getPersistentDataContainer().get(plugin.getAirdropKey(), PersistentDataType.STRING)) {
                 case "save":
+                    inv.close();
+                    manager.saveToAirdrop();;
                     break;
                 case "name":
                     break;
