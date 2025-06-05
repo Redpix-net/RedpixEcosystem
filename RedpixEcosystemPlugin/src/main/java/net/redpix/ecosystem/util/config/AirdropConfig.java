@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -45,5 +45,36 @@ public class AirdropConfig {
         }
 
         return (items.toArray(new ItemStack[0]));
+    }
+
+    public List<ItemStack[]> getAllAirdrops() {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+
+        List<ItemStack[]> airdrops = new ArrayList<>();
+
+        for (String key: config.getKeys(false)) {
+            ItemStack[] itemStacks = new ItemStack[27];
+            int i = 0;
+
+            ConfigurationSection airdrop = config.getConfigurationSection(key);
+                
+            if (airdrop == null) continue;
+    
+            List<?> content = airdrop.getList("content");
+            for (Object obj : content) {
+                if (!(obj instanceof ItemStack)) {
+                    itemStacks[i] = null;
+                    i++;
+                    continue;
+                }
+
+                itemStacks[i] = (ItemStack) obj;
+                i++;
+            }
+
+            airdrops.add(itemStacks);
+        }
+
+        return airdrops;
     }
 }

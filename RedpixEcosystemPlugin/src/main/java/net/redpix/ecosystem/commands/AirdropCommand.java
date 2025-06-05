@@ -28,6 +28,12 @@ public class AirdropCommand {
         .then(Commands.literal("create")
             .requires(sender -> sender.getSender().hasPermission("airdrop.create"))
             .executes(this::executeCreate)
+        )
+        .then(Commands.literal("start")
+            .executes(this::executeStart)
+        )
+        .then(Commands.literal("stop")
+            .executes(this::executeStop)
         );
     }
 
@@ -43,6 +49,19 @@ public class AirdropCommand {
 
     private int executeCreate(CommandContext<CommandSourceStack> ctx) {
         plugin.getAirdropManager().openMenu((Player) ctx.getSource().getSender());
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int executeStart(CommandContext<CommandSourceStack> ctx) {
+        plugin.getAirdropManager().setRunning(true);
+        plugin.getAirdropManager().spawnClock();
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int executeStop(CommandContext<CommandSourceStack> ctx) {
+        plugin.getAirdropManager().setRunning(false);
 
         return Command.SINGLE_SUCCESS;
     }

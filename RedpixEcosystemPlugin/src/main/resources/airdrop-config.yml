@@ -1,3 +1,4 @@
 world: "world"
 maxX: 1000
 maxZ: 1000
+spawn-time: 200
