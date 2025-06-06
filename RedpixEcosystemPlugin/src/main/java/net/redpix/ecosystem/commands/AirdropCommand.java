@@ -1,15 +1,18 @@
 package net.redpix.ecosystem.commands;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.entity.Player;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.Component;
 import net.redpix.ecosystem.Ecosystem;
 
 public class AirdropCommand {
@@ -35,6 +38,9 @@ public class AirdropCommand {
         )
         .then(Commands.literal("stop")
             .executes(this::executeStop)
+        )
+        .then(Commands.literal("list")
+            .executes(this::executeList)
         );
     }
 
@@ -63,6 +69,18 @@ public class AirdropCommand {
 
     private int executeStop(CommandContext<CommandSourceStack> ctx) {
         plugin.getAirdropManager().setRunning(false);
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int executeList(CommandContext<CommandSourceStack> ctx) {
+        Player p = (Player) ctx.getSource().getSender();
+    
+        HashMap<Integer, String> airdrops = plugin.getConfigManager().getAirdropConfig().getAirdropList();
+
+        for (Map.Entry<Integer, String> set : airdrops.entrySet())  {
+            p.sendMessage(Component.text(String.format("ID[%s]: %s", set.getKey().toString(), set.getValue())));
+        }
 
         return Command.SINGLE_SUCCESS;
     }

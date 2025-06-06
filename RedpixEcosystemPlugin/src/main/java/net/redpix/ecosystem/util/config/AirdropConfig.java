@@ -24,7 +24,10 @@ public class AirdropConfig {
         int id = 0;
 
         for (String key : config.getKeys(false)) {
-            id = Integer.parseInt(key.substring(8));
+            if (!key.startsWith("airdrop-")) continue;
+
+            id = Integer.parseInt(key.substring(8)) + 1;
+
         }
 
         config.set(String.format("airdrop-%s.name", id), name);
@@ -111,6 +114,26 @@ public class AirdropConfig {
             String id = airdrop.getString("id");
 
             airdrops.put(Integer.parseInt(id), itemStacks);
+        }
+
+        return airdrops;
+    }
+
+    // return id and name of each airdrop
+    public HashMap<Integer, String> getAirdropList() {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+
+        HashMap<Integer, String> airdrops = new HashMap<>();
+
+        for (String key : config.getKeys(false)) {
+            ConfigurationSection airdrop = config.getConfigurationSection(key);
+
+            if (airdrop == null) continue;
+
+            int id = Integer.parseInt(airdrop.getString("id"));
+            String name = airdrop.getString("name");
+
+            airdrops.put(id, name);
         }
 
         return airdrops;
