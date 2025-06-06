@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.redpix.ecosystem.Ecosystem;
 import net.redpix.ecosystem.util.AirdropInventory;
@@ -36,15 +35,14 @@ public class AirdropListener implements Listener
             return;
         }
 
-
         ItemStack item = e.getCurrentItem();
-
 
         if (item == null) {
             return;
         }
         
         // this not only bad code but also not really expandable, pls stop... OR DONT I GUESS
+        // dirty nesting .-.
         if (item.getPersistentDataContainer().has(plugin.getAirdropKey(), PersistentDataType.STRING)) {
             switch (item.getPersistentDataContainer().get(plugin.getAirdropKey(), PersistentDataType.STRING)) {
                 case "save":
@@ -60,13 +58,25 @@ public class AirdropListener implements Listener
                     inv.close();
                     manager.getInventory().setState(InventoryState.SETTING_CONTENTS);
                     manager.openMenu(p);
-
                     break;
                 case "back":
                     inv.close();
                     manager.getInventory().setState(InventoryState.DEFAULT);
                     manager.openMenu(p);
-
+                    break;
+                case "chance":
+                    inv.close();
+                    manager.getInventory().setState(InventoryState.SETTING_CHANCES);
+                    manager.openMenu(p);
+                    break;
+                case "preview":
+                    if (e.getClick().isLeftClick()) {
+                        manager.getInventory().changeChance(e.getSlot(), 10);
+                    } else if (e.getClick().isRightClick()) {
+                        manager.getInventory().changeChance(e.getSlot(), -10);
+                    } else if (e.getClick().isShiftClick()) {
+                        // TODO!    
+                    }
                     break;
                 default:
                     break;
@@ -74,6 +84,12 @@ public class AirdropListener implements Listener
 
             e.setCancelled(true);
         }
+
+        if (manager.getInventory().getState() == InventoryState.SETTING_CONTENTS) {
+            return;
+        }
+
+        e.setCancelled(true);
     }
 
     @EventHandler
@@ -89,13 +105,16 @@ public class AirdropListener implements Listener
 
         switch (manager.getInventory().getState()) {
             case SETTING_NAME:
-                break;
+                return;
             case SETTING_CONTENTS:
-                break;
+                return;
             case DEFAULT:
-                e.setCancelled(true);
+                break;
+            case SETTING_CHANCES:
                 break;
         }
+
+        e.setCancelled(true);
     }
 
     public boolean isAirdropInv(Inventory inv) {

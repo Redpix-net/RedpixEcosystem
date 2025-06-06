@@ -1,6 +1,8 @@
 package net.redpix.ecosystem.util;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.bukkit.Chunk;
@@ -24,8 +26,8 @@ public class AirdropManager {
     private long time_ticks;
     private long time_ticks_current;
 
-    private List<ItemStack[]> airdrops;
-
+    private HashMap<Integer, ItemStack[]> airdrops;
+ 
     public AirdropManager(Ecosystem plugin) {
         this.inv = new AirdropInventory(plugin);
         this.plugin = plugin;
@@ -42,21 +44,22 @@ public class AirdropManager {
     }
 
     public void saveToAirdrop() {
-        plugin.getConfigManager().getAirdropConfig().saveAirdrop(inv.getContent(), inv.getName());
+        plugin.getConfigManager().getAirdropConfig().saveAirdrop(inv.getContent(), inv.getName(), inv.getChances());
     }
 
-    public void summon(Player player, String name) {
+    public void summon(Player player, int id) {
         Location loc = player.getLocation();
         loc.getBlock().setType(Material.BARREL);
 
         Barrel airdrop = (Barrel) loc.getBlock().getState();
 
-        ItemStack[] items = plugin.getConfigManager().getAirdropConfig().getContent(name);
+        ItemStack[] items = plugin.getConfigManager().getAirdropConfig().getContent(String.valueOf(id));
 
         airdrop.getInventory().setContents(items);
     }
 
-    public void summon_random(ItemStack[] content) {
+    // ID of the give airdrop, PLEASE FOR THE LOVE OF EVERYTHING THATS HOLY PLEASE ADD THE ID TO THE CONFIGS!
+    public void summon_random(Integer id) {
         Random rand = new Random();
 
         YamlConfiguration config = plugin.getConfigManager().getAirdropSettingsConfig().getConfig();
@@ -82,8 +85,17 @@ public class AirdropManager {
             loc.getBlock().setType(Material.BARREL);
 
             Barrel airdrop = (Barrel) loc.getBlock().getState();
+            
+            ItemStack[] items = airdrops.get(id);
 
-            airdrop.getInventory().setContents(content);
+            HashMap<Integer, Integer> content = plugin.getConfigManager().getAirdropConfig().getChances(String.valueOf(id));
+
+            for (Map.Entry<Integer, Integer> set : content.entrySet()) {
+                int amount = rand.nextInt(set.getValue());
+                items[set.getKey()].setAmount(amount);
+            }
+
+            airdrop.getInventory().setContents(items);
         });
     }
 
@@ -100,7 +112,7 @@ public class AirdropManager {
 
             if (time_ticks_current <= 0) {
                 int i = rand.nextInt(airdrops.size());
-                summon_random(airdrops.get(i));
+                summon_random(i);
                 time_ticks_current = time_ticks;
             }
 

@@ -3,6 +3,7 @@ package net.redpix.ecosystem.commands;
 import org.bukkit.entity.Player;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -22,7 +23,7 @@ public class AirdropCommand {
         return Commands.literal("airdrop")
         .then(Commands.literal("summon")
             .requires(sender -> sender.getSender().hasPermission("airdrop.summon"))
-            .then(Commands.argument("name", StringArgumentType.word())
+            .then(Commands.argument("id", IntegerArgumentType.integer())
                 .executes(this::executeSummon))
         )
         .then(Commands.literal("create")
@@ -38,11 +39,11 @@ public class AirdropCommand {
     }
 
     private int executeSummon(CommandContext<CommandSourceStack> ctx) {
-        String name = ctx.getArgument("name", String.class);
+        int id = ctx.getArgument("id", Integer.class);
 
         Player p = (Player) ctx.getSource().getSender();
 
-        plugin.getAirdropManager().summon(p, name);
+        plugin.getAirdropManager().summon(p, id);
 
         return Command.SINGLE_SUCCESS;
     }
