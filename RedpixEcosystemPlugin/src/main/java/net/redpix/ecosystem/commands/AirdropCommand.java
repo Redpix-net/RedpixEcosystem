@@ -45,6 +45,9 @@ public class AirdropCommand {
         .then(Commands.literal("remove")
             .then(Commands.argument("id", IntegerArgumentType.integer())
                 .executes(this::executeRemove))
+        )
+        .then(Commands.literal("reload")
+            .executes(this::executeRefresh)
         );
     }
 
@@ -93,6 +96,12 @@ public class AirdropCommand {
         int id = ctx.getArgument("id", Integer.class);
 
         plugin.getConfigManager().getAirdropConfig().removeAirdrop(String.valueOf(id));
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int executeRefresh(CommandContext<CommandSourceStack> ctx) {
+        plugin.getAirdropManager().refresh();
 
         return Command.SINGLE_SUCCESS;
     }

@@ -35,6 +35,12 @@ public class AirdropManager {
         this.airdrops = plugin.getConfigManager().getAirdropConfig().getAllAirdrops();
     }
 
+    public void refresh() {
+        this.time_ticks = plugin.getConfigManager().getAirdropSettingsConfig().getConfig().getLong("spawn-time");
+        this.airdrops = plugin.getConfigManager().getAirdropConfig().getAllAirdrops();
+
+    }
+
     public void openMenu(Player player) {
         player.openInventory(inv.getInventory());
     }
