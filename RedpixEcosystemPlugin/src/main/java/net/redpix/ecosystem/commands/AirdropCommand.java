@@ -41,6 +41,10 @@ public class AirdropCommand {
         )
         .then(Commands.literal("list")
             .executes(this::executeList)
+        )
+        .then(Commands.literal("remove")
+            .then(Commands.argument("id", IntegerArgumentType.integer())
+                .executes(this::executeRemove))
         );
     }
 
@@ -81,6 +85,14 @@ public class AirdropCommand {
         for (Map.Entry<Integer, String> set : airdrops.entrySet())  {
             p.sendMessage(Component.text(String.format("ID[%s]: %s", set.getKey().toString(), set.getValue())));
         }
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int executeRemove(CommandContext<CommandSourceStack> ctx) {
+        int id = ctx.getArgument("id", Integer.class);
+
+        plugin.getConfigManager().getAirdropConfig().removeAirdrop(String.valueOf(id));
 
         return Command.SINGLE_SUCCESS;
     }

@@ -138,4 +138,14 @@ public class AirdropConfig {
 
         return airdrops;
     }
+
+    public void removeAirdrop(String id) {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+
+        ConfigurationSection airdrop = config.getConfigurationSection(String.format("airdrop-%s", id));
+        
+        if (airdrop == null) return;
+
+        config.set(String.format("airdrop-%s", id), null);
+    }
 }
