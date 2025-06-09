@@ -113,6 +113,7 @@ public class AirdropManager {
 
         globalRegionScheduler.runAtFixedRate(plugin, task -> {
             if (!running) {
+                task.cancel();
                 return;
             }
 
